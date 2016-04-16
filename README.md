@@ -13,6 +13,7 @@ I added a few checks before calling the fs api. For more information about this,
 
 ## Contributing
 Something missing? Found a bug? - Create a pull request or an issue.
+[Github](https://github.com/ChristianKohler/PathIntellisense)
 
 ## License
 This software is released under [MIT License](http://www.opensource.org/licenses/mit-license.php)
