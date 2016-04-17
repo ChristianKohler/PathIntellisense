@@ -14,7 +14,7 @@
         "*"
     ],
     "main": "./out/src/extension",
-    "icon": "./icon/path-intellisense.png",
+    "icon": "icon/path-intellisense.png",
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
         "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
