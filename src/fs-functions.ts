@@ -1,5 +1,5 @@
 import { readdir } from 'fs';
-import { resolve as resolvePath } from 'path';
+import { resolve as resolvePath, sep as dirSeparator } from 'path';
 
 export function getChildrenOfPath(path) {
     return new Promise<string[]>((resolve, reject) => {
@@ -14,7 +14,7 @@ export function getChildrenOfPath(path) {
 }
 
 export function getPath(fileName: string, text: string) : string {
-    return resolvePath(fileName.substring(0, fileName.lastIndexOf("/")), text);
+    return resolvePath(fileName.substring(0, fileName.lastIndexOf(dirSeparator)), text);
 }
 
 function hiddenFiles(filename) {
