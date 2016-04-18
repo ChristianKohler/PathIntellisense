@@ -9,22 +9,23 @@ export class PathIntellisense implements CompletionItemProvider {
     
     provideCompletionItems(document: TextDocument, position: Position): Thenable<PathCompletionItem[]> {
         const line = document.getText(document.lineAt(position).range);
+        const isImport = isImportOrRequire(line);
         const textWithinString = getTextWithinString(line, position.character);
         const path = getPath(document.fileName, textWithinString);
         
-        if (this.shouldProvide(line, textWithinString)) {
-            return this.getChildrenOfPath(path).then(children => children.map(child => new PathCompletionItem(child)));
+        if (this.shouldProvide(textWithinString, isImport)) {
+            return this.getChildrenOfPath(path).then(children => children.map(child => new PathCompletionItem(child, isImport)));
         } else {
             return Promise.resolve([]);
         }
     }
     
-    shouldProvide(line, textWithinString) {
+    shouldProvide(textWithinString, isImport) {
         if (!textWithinString || textWithinString.length === 0) {
             return false;
         }
         
-        if (isImportOrRequire(line) && textWithinString[0] !== '.') {
+        if (isImport && textWithinString[0] !== '.') {
             return false;
         }
         

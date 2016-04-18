@@ -2,17 +2,35 @@
     "name": "path-intellisense",
     "displayName": "Path Intellisense",
     "description": "Visual Studio Code plugin that autocompletes filenames",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "publisher": "christian-kohler",
     "engines": {
         "vscode": "^1.0.0"
     },
+    "homepage": "https://github.com/ChristianKohler/PathIntellisense",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ChristianKohler/PathIntellisense.git"
+	},
     "categories": [
         "Other"
     ],
     "activationEvents": [
         "*"
     ],
+    "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "path-intellisense",
+            "properties": {
+                "path-intellisense.extensionOnImport": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Adds the file extension to a import statements"
+                }
+            }
+        }    
+    },
     "main": "./out/src/extension",
     "icon": "icon/path-intellisense.png",
     "scripts": {
