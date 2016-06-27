@@ -22,6 +22,7 @@ export class PathCompletionItem extends CompletionItem {
     addSlashForFolder(fileInfo: FileInfo) {
         if (!fileInfo.isFile) {
             this.label = `${fileInfo.file}/`;
+            this.insertText = fileInfo.file; 
         }
     }
     
