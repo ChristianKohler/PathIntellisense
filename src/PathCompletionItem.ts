@@ -5,13 +5,13 @@ import { workspace } from 'vscode';
 const withExtension = workspace.getConfiguration('path-intellisense')['extensionOnImport'];
 
 export class PathCompletionItem extends CompletionItem {
-    constructor(fileInfo: FileInfo, isImport: boolean) {
+    constructor(fileInfo: FileInfo, isImport: boolean, documentExtension: string) {
         super(fileInfo.file);
         
         this.kind = CompletionItemKind.File;
         
         this.addGroupByFolderFile(fileInfo);
-        this.removeExtensionIfImport(fileInfo, isImport);
+        this.removeExtension(fileInfo, isImport, documentExtension);
         this.addSlashForFolder(fileInfo);
     }
     
@@ -26,11 +26,18 @@ export class PathCompletionItem extends CompletionItem {
         }
     }
     
-    removeExtensionIfImport(fileInfo: FileInfo, isImport: boolean) {
+    removeExtension(fileInfo: FileInfo, isImport: boolean, documentExtension:string) {
         if (!fileInfo.isFile || withExtension || !isImport) {
             return;
         }
         
+        const fragments = fileInfo.file.split('.');
+        const extension = fragments[fragments.length - 1];
+
+        if (extension !== documentExtension) {
+            return;
+        }
+
         let index = fileInfo.file.lastIndexOf('.');
         this.insertText = index != -1 ? fileInfo.file.substring(0, index) : fileInfo.file;
     }
