@@ -18,7 +18,7 @@ export class PathIntellisense implements CompletionItemProvider {
         if (this.shouldProvide(textWithinString, isImport)) {
             return this.getChildrenOfPath(path).then(children => {
                 return [
-                    new UpCompletionItem(), 
+                    new UpCompletionItem(),
                     ...children.map(child => new PathCompletionItem(child, isImport, documentExtension))
                 ];
             });

@@ -20,7 +20,6 @@ export function extractExtension(document: TextDocument) {
 
     const fragments = document.fileName.split('.');
     const extension = fragments[fragments.length - 1];
-    console.log(extension);
 
     if (!extension || extension.length > 3) {
         return undefined;
