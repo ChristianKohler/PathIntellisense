@@ -26,6 +26,7 @@ Path Intellisense removes the file extension by default if the statement is a im
 ```
 
 ## History
+* v1.0.0 - Added .. on top of each suggestion, Removed trailing slash, bugs fixed
 * v0.2.0 - Remove file extension within imports (configurable)
 * v0.1.0 - Added slash after folders, group by folder and files, file icon
 * v0.0.5 - Fixed windows path issue
