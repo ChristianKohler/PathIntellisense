@@ -1,13 +1,14 @@
-import { CompletionItemProvider, TextDocument, Position } from 'vscode';
+import { CompletionItemProvider, TextDocument, Position, CompletionItem } from 'vscode';
 import { isImportOrRequire, getTextWithinString } from './text-parser';
 import { getPath, extractExtension } from './fs-functions';
 import { PathCompletionItem } from './PathCompletionItem';
+import { UpCompletionItem } from './UpCompletionItem';
 
 export class PathIntellisense implements CompletionItemProvider {
     
     constructor(private getChildrenOfPath: Function) { }
     
-    provideCompletionItems(document: TextDocument, position: Position): Thenable<PathCompletionItem[]> {
+    provideCompletionItems(document: TextDocument, position: Position): Thenable<CompletionItem[]> {
         const line = document.getText(document.lineAt(position).range);
         const isImport = isImportOrRequire(line);
         const documentExtension = extractExtension(document);
@@ -15,7 +16,12 @@ export class PathIntellisense implements CompletionItemProvider {
         const path = getPath(document.fileName, textWithinString);
         
         if (this.shouldProvide(textWithinString, isImport)) {
-            return this.getChildrenOfPath(path).then(children => children.map(child => new PathCompletionItem(child, isImport, documentExtension)));
+            return this.getChildrenOfPath(path).then(children => {
+                return [
+                    new UpCompletionItem(), 
+                    ...children.map(child => new PathCompletionItem(child, isImport, documentExtension))
+                ];
+            });
         } else {
             return Promise.resolve([]);
         }
