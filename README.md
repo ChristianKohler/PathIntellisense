@@ -7,9 +7,8 @@ In the command palette (cmd-shift-p) select Install Extension and choose Path In
 ## Usage
 ![IDE](http://i.giphy.com/iaHeUiDeTUZuo.gif)
 
-## Ideas
-Filesystem api calls are slow. That's why this plugin tries to keep fs access to a minimum. 
-I added a few checks before calling the fs api. For more information about this, have a look a the unit tests.  
+## Node packages intellisense
+Use [npm intellisense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.npm-intellisense)
 
 ## Contributing
 Something missing? Found a bug? - Create a pull request or an issue.
@@ -26,6 +25,7 @@ Path Intellisense removes the file extension by default if the statement is a im
 ```
 
 ## History
+* v1.0.1 - Fixed compatibility with VS Code 1.3
 * v1.0.0 - Added .. on top of each suggestion, Removed trailing slash, bugs fixed
 * v0.2.0 - Remove file extension within imports (configurable)
 * v0.1.0 - Added slash after folders, group by folder and files, file icon

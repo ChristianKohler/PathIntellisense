@@ -14,7 +14,7 @@ export class PathIntellisense implements CompletionItemProvider {
         const documentExtension = extractExtension(document);
         const textWithinString = getTextWithinString(line, position.character);
         const path = getPath(document.fileName, textWithinString);
-        
+
         if (this.shouldProvide(textWithinString, isImport)) {
             return this.getChildrenOfPath(path).then(children => {
                 return [
@@ -35,11 +35,7 @@ export class PathIntellisense implements CompletionItemProvider {
         if (isImport && textWithinString[0] !== '.') {
             return false;
         }
-        
-        if (textWithinString.slice(-1) !== '/') {
-            return false;
-        }
-        
+
         return true;
     }
 }

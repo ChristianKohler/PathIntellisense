@@ -10,7 +10,7 @@ export function getChildrenOfPath(path) {
 }
 
 export function getPath(fileName: string, text: string) : string {
-    return resolvePath(fileName.substring(0, fileName.lastIndexOf(dirSeparator)), text);
+    return resolvePath(fileName.substring(0, fileName.lastIndexOf(dirSeparator)), text.substring(0, text.lastIndexOf(dirSeparator)));;
 }
 
 export function extractExtension(document: TextDocument) {
