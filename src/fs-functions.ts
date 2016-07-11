@@ -1,5 +1,5 @@
 import { readdir } from 'fs';
-import { resolve as resolvePath, sep as dirSeparator } from 'path';
+import { resolve as resolvePath, sep as dirSeparator, normalize } from 'path';
 import { FileInfo } from './FileInfo';
 import { TextDocument } from 'vscode';
 
@@ -10,7 +10,17 @@ export function getChildrenOfPath(path) {
 }
 
 export function getPath(fileName: string, text: string) : string {
-    return resolvePath(fileName.substring(0, fileName.lastIndexOf(dirSeparator)), text.substring(0, text.lastIndexOf(dirSeparator)));;
+    console.log(fileName);
+    console.log(text);
+    console.log(normalize(text));
+    
+    console.log(fileName.substring(0, fileName.lastIndexOf(dirSeparator)));
+    console.log(text.substring(0, text.lastIndexOf(dirSeparator)));
+    console.log(normalize(text).substring(0, normalize(text).lastIndexOf(dirSeparator)));
+    console.log('====');
+    
+    
+    return resolvePath(fileName.substring(0, fileName.lastIndexOf(dirSeparator)), normalize(text).substring(0, normalize(text).lastIndexOf(dirSeparator)));;
 }
 
 export function extractExtension(document: TextDocument) {

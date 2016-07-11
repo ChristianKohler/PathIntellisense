@@ -25,6 +25,7 @@ Path Intellisense removes the file extension by default if the statement is a im
 ```
 
 ## History
+* v1.0.2 - Fixed Bug #15 #16
 * v1.0.1 - Fixed compatibility with VS Code 1.3
 * v1.0.0 - Added .. on top of each suggestion, Removed trailing slash, bugs fixed
 * v0.2.0 - Remove file extension within imports (configurable)
