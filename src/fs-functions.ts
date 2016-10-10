@@ -9,8 +9,11 @@ export function getChildrenOfPath(path) {
         .catch(() => []);
 }
 
-export function getPath(fileName: string, text: string) : string {
-    return resolvePath(fileName.substring(0, fileName.lastIndexOf(dirSeparator)), normalize(text).substring(0, normalize(text).lastIndexOf(dirSeparator)));;
+export function getPath(fileName: string, text: string) : string {    
+    const referencedFolder = fileName.substring(0, fileName.lastIndexOf(dirSeparator));
+    const lastFolderInText = normalize(text).substring(0, normalize(text).lastIndexOf(dirSeparator));
+
+    return resolvePath(referencedFolder, lastFolderInText);
 }
 
 export function extractExtension(document: TextDocument) {
