@@ -9,34 +9,35 @@ export class PathIntellisense implements CompletionItemProvider {
     constructor(private getChildrenOfPath: Function) { }
     
     provideCompletionItems(document: TextDocument, position: Position): Thenable<CompletionItem[]> {
-        const line = document.getText(document.lineAt(position).range);
-        const isImport = isImportOrRequire(line);
+        const textCurrentLine = document.getText(document.lineAt(position).range);
+        const textWithinString = getTextWithinString(textCurrentLine, position.character);
+        const isImport = isImportOrRequire(textCurrentLine);
         const documentExtension = extractExtension(document);
-        const textWithinString = getTextWithinString(line, position.character);
-        
-        if (this.shouldProvide(textWithinString, isImport)) {
-            const path = getPath(document.fileName, textWithinString);
-        
-            return this.getChildrenOfPath(path).then(children => {
-                return [
-                    new UpCompletionItem(),
-                    ...children.map(child => new PathCompletionItem(child, isImport, documentExtension))
-                ];
-            });
-        } else {
+
+        if (!this.shouldProvide(textWithinString, isImport)) {
             return Promise.resolve([]);
         }
-    }
-    
-    shouldProvide(textWithinString, isImport) {
-        if (!textWithinString || textWithinString.length === 0) {
-            return false;
-        }
+
+        const path = getPath(document.fileName, textWithinString);
         
-        if (isImport && textWithinString[0] !== '.') {
-            return false;
+        return this.getChildrenOfPath(path).then(children => ([
+            new UpCompletionItem(),
+            ...children.map(child => new PathCompletionItem(child, isImport, documentExtension))
+        ]));
+    }
+
+    shouldProvide(textWithinString, isImport) {
+        const typedAnything = textWithinString && textWithinString.length > 0;
+        const startsWithDot = typedAnything && textWithinString[0] === '.';
+        
+        if (isImport && startsWithDot) {
+            return true;
         }
 
-        return true;
+        if (!isImport && typedAnything) {
+            return true;
+        }
+
+        return false;
     }
 }
