@@ -9,18 +9,11 @@ export function getChildrenOfPath(path) {
         .catch(() => []);
 }
 
-export function getPath(fileName: string, text: string) : string {
-    console.log(fileName);
-    console.log(text);
-    console.log(normalize(text));
-    
-    console.log(fileName.substring(0, fileName.lastIndexOf(dirSeparator)));
-    console.log(text.substring(0, text.lastIndexOf(dirSeparator)));
-    console.log(normalize(text).substring(0, normalize(text).lastIndexOf(dirSeparator)));
-    console.log('====');
-    
-    
-    return resolvePath(fileName.substring(0, fileName.lastIndexOf(dirSeparator)), normalize(text).substring(0, normalize(text).lastIndexOf(dirSeparator)));;
+export function getPath(fileName: string, text: string) : string {    
+    const referencedFolder = fileName.substring(0, fileName.lastIndexOf(dirSeparator));
+    const lastFolderInText = normalize(text).substring(0, normalize(text).lastIndexOf(dirSeparator));
+
+    return resolvePath(referencedFolder, lastFolderInText);
 }
 
 export function extractExtension(document: TextDocument) {

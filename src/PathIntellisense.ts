@@ -13,9 +13,10 @@ export class PathIntellisense implements CompletionItemProvider {
         const isImport = isImportOrRequire(line);
         const documentExtension = extractExtension(document);
         const textWithinString = getTextWithinString(line, position.character);
-        const path = getPath(document.fileName, textWithinString);
-
+        
         if (this.shouldProvide(textWithinString, isImport)) {
+            const path = getPath(document.fileName, textWithinString);
+        
             return this.getChildrenOfPath(path).then(children => {
                 return [
                     new UpCompletionItem(),
