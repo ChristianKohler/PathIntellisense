@@ -24,16 +24,45 @@ Path Intellisense removes the file extension by default if the statement is a im
 }
 ```
 
+### Mappings
+Define custom mappings which can be useful for using absolute paths or in combination with webpack resolve options.
+
+```javascript
+{
+	"path-intellisense.mappings": {
+		"/": "${workspaceRoot}",
+		"lib": "${workspaceRoot}/lib",
+		"global": "/Users/dummy/globalLibs"
+	},
+}
+```
+
+Use ${workspaceRoot} when the path should be relative to the current root of the current project.
+
 ## History
-* v1.0.2 - Fixed Bug #15 #16
-* v1.0.1 - Fixed compatibility with VS Code 1.3
-* v1.0.0 - Added .. on top of each suggestion, Removed trailing slash, bugs fixed
-* v0.2.0 - Remove file extension within imports (configurable)
-* v0.1.0 - Added slash after folders, group by folder and files, file icon
-* v0.0.5 - Fixed windows path issue
-* v0.0.3 - Fixed unknown publisher issue
-* v0.0.2 - Updated Readme.md
-* v0.0.1 - Initial 
+### v1.1.0
+- [Feature] Custom Mappings #19, #5
+- [Bug] Fixed #11
+### v1.0.2
+- [Bug] Fixed #15
+- [Bug] Fixed #16
+### v1.0.1
+- Fixed compatibility with VS Code 1.3
+### v1.0.0
+- [Feature] Added .. on top of each suggestion, Removed trailing slash
+- [Bugs] Various bugs fixed
+### v0.2.0
+- [Feature] Remove file extension within imports (configurable)
+### v0.1.0
+- Added slash after folders, group by folder and files, file icon
+### v0.0.5 
+- Fixed windows path issue
+### v0.0.3 
+- Fixed unknown publisher issue
+### v0.0.2 
+- Updated Readme.md
+### v0.0.1 
+- Initial 
 
 ## License
 This software is released under [MIT License](http://www.opensource.org/licenses/mit-license.php)

@@ -9,7 +9,7 @@ import {
 } from 'vscode';
 import * as assert from 'assert';
 import { PathIntellisense } from '../src/PathIntellisense';
-import { getTextWithinString } from '../src/text-parser';
+import { getTextWithinString, isImportOrRequire } from '../src/text-parser';
 
 suite("PathIntellisense General Tests", () => {
     test("not in string",               () => assert.equal(false, should('any text', 5)) );
@@ -23,5 +23,5 @@ suite("PathIntellisense Require/Import Tests", () => {
 });
 
 function should(text, position) {
-    return new PathIntellisense(() => {}).shouldProvide(text, getTextWithinString(text, position));
+    return new PathIntellisense(() => {}).shouldProvide(getTextWithinString(text, position), isImportOrRequire(text));
 }

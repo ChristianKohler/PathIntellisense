@@ -3,17 +3,27 @@ import { resolve as resolvePath, sep as dirSeparator, normalize } from 'path';
 import { FileInfo } from './FileInfo';
 import { TextDocument } from 'vscode';
 
+export interface Mapping {
+    key: string,
+    value: string
+}
+
 export function getChildrenOfPath(path) {
     return readdirPromise(path)
         .then(files => files.filter(notHidden).map(f => new FileInfo(path, f)))
         .catch(() => []);
 }
 
-export function getPath(fileName: string, text: string) : string {    
-    const referencedFolder = fileName.substring(0, fileName.lastIndexOf(dirSeparator));
-    const lastFolderInText = normalize(text).substring(0, normalize(text).lastIndexOf(dirSeparator));
+export function getPath(fileName: string, text: string, mappings?: Mapping[]) : string {        
+    const mapping = mappings && mappings.reduce((prev, curr) => {
+        return prev || (normalize(text).indexOf(curr.key) === 0 && curr)
+    }, undefined);
 
-    return resolvePath(referencedFolder, lastFolderInText);
+    const referencedFolder = mapping ? mapping.value : fileName.substring(0, fileName.lastIndexOf(dirSeparator));
+    const lastFolderInText = normalize(text).substring(0, normalize(text).lastIndexOf(dirSeparator));
+    const pathInText = mapping ? `.${lastFolderInText.substring(mapping.key.length, lastFolderInText.length)}`: lastFolderInText;
+
+    return resolvePath(referencedFolder, pathInText);
 }
 
 export function extractExtension(document: TextDocument) {

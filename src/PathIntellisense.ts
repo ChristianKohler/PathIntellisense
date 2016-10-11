@@ -1,6 +1,6 @@
-import { CompletionItemProvider, TextDocument, Position, CompletionItem } from 'vscode';
+import { CompletionItemProvider, TextDocument, Position, CompletionItem, workspace } from 'vscode';
 import { isImportOrRequire, getTextWithinString } from './text-parser';
-import { getPath, extractExtension } from './fs-functions';
+import { getPath, extractExtension, Mapping } from './fs-functions';
 import { PathCompletionItem } from './PathCompletionItem';
 import { UpCompletionItem } from './UpCompletionItem';
 
@@ -13,24 +13,21 @@ export class PathIntellisense implements CompletionItemProvider {
         const textWithinString = getTextWithinString(textCurrentLine, position.character);
         const isImport = isImportOrRequire(textCurrentLine);
         const documentExtension = extractExtension(document);
+        const mappings = this.getMappings();
 
-        if (!this.shouldProvide(textWithinString, isImport)) {
+        if (!this.shouldProvide(textWithinString, isImport, mappings)) {
             return Promise.resolve([]);
         }
-
-        const path = getPath(document.fileName, textWithinString);
         
-        return this.getChildrenOfPath(path).then(children => ([
-            new UpCompletionItem(),
-            ...children.map(child => new PathCompletionItem(child, isImport, documentExtension))
-        ]));
+        return this.provide(document.fileName, textWithinString, mappings, isImport, documentExtension);
     }
 
-    shouldProvide(textWithinString, isImport) {
+    shouldProvide(textWithinString: string, isImport: boolean, mappings?: Mapping[]) {
         const typedAnything = textWithinString && textWithinString.length > 0;
         const startsWithDot = typedAnything && textWithinString[0] === '.';
-        
-        if (isImport && startsWithDot) {
+        const startsWithMapping = mappings && mappings.some(mapping => textWithinString.indexOf(mapping.key) === 0);
+
+        if (isImport && (startsWithDot || startsWithMapping)) {
             return true;
         }
 
@@ -39,5 +36,22 @@ export class PathIntellisense implements CompletionItemProvider {
         }
 
         return false;
+    }
+
+    provide(fileName, textWithinString, mappings, isImport, documentExtension) {
+        const path = getPath(fileName, textWithinString, mappings);
+        
+        return this.getChildrenOfPath(path).then(children => ([
+            new UpCompletionItem(),
+            ...children.map(child => new PathCompletionItem(child, isImport, documentExtension))
+        ]));
+    }
+
+    getMappings(): Mapping[] {
+        const mappings = workspace.getConfiguration('path-intellisense')['mappings'];
+        return Object.keys(mappings)
+            .map(key => ({ key: key, value: mappings[key]}))
+            .filter(mapping => !!workspace.rootPath || mapping.value.indexOf('${workspaceRoot}') === -1)
+            .map(mapping => ({ key: mapping.key, value: mapping.value.replace('${workspaceRoot}', workspace.rootPath) }));
     }
 }
