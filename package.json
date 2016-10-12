@@ -30,8 +30,13 @@
                 },
                 "path-intellisense.mappings": {
                     "type": "object",
-                    "default": false,
+                    "default": {},
                     "description": "Mappings for paths"
+                },
+                "path-intellisense.showHiddenFiles": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Show hidden files"
                 }
             }
         }    

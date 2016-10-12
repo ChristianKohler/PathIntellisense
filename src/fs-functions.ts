@@ -1,7 +1,7 @@
 import { readdir } from 'fs';
 import { resolve as resolvePath, sep as dirSeparator, normalize } from 'path';
 import { FileInfo } from './FileInfo';
-import { TextDocument } from 'vscode';
+import { TextDocument, workspace } from 'vscode';
 
 export interface Mapping {
     key: string,
@@ -54,5 +54,6 @@ function readdirPromise(path: string) {
 }
 
 function notHidden(filename) {
-    return filename[0] !== '.';
+    const showHiddenFiles = workspace.getConfiguration('path-intellisense')['showHiddenFiles'];
+    return showHiddenFiles || filename[0] !== '.';
 }

@@ -24,6 +24,15 @@ Path Intellisense removes the file extension by default if the statement is a im
 }
 ```
 
+### Show hidden files
+Per default, hidden files are not displayed. Set this to true to show hidden files.
+
+```javascript
+{
+	"path-intellisense.showHiddenFiles": true,
+}
+```
+
 ### Mappings
 Define custom mappings which can be useful for using absolute paths or in combination with webpack resolve options.
 
@@ -42,6 +51,7 @@ Use ${workspaceRoot} when the path should be relative to the current root of the
 ## History
 ### v1.1.0
 - [Feature] Custom Mappings #19, #5
+- [Feature] Setting to enable display of hidden files #12
 - [Bug] Fixed #11
 ### v1.0.2
 - [Bug] Fixed #15
