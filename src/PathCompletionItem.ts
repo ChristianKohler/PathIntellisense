@@ -34,7 +34,7 @@ export class PathCompletionItem extends CompletionItem {
         const fragments = fileInfo.file.split('.');
         const extension = fragments[fragments.length - 1];
 
-        if (extension !== documentExtension) {
+        if (extension !== documentExtension && !isImport) {
             return;
         }
 
