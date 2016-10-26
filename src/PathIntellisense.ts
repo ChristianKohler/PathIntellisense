@@ -1,4 +1,4 @@
-import { CompletionItemProvider, TextDocument, Position, CompletionItem, workspace } from 'vscode';
+import { CompletionItemProvider, TextDocument, Position, CompletionItem, Range, workspace } from 'vscode';
 import { isImportOrRequire, getTextWithinString } from './text-parser';
 import { getPath, extractExtension, Mapping } from './fs-functions';
 import { PathCompletionItem } from './PathCompletionItem';
@@ -11,6 +11,7 @@ export class PathIntellisense implements CompletionItemProvider {
     provideCompletionItems(document: TextDocument, position: Position): Thenable<CompletionItem[]> {
         const textCurrentLine = document.getText(document.lineAt(position).range);
         const textWithinString = getTextWithinString(textCurrentLine, position.character);
+        const importRange = this.importStringRange(document, position);
         const isImport = isImportOrRequire(textCurrentLine);
         const documentExtension = extractExtension(document);
         const mappings = this.getMappings();
@@ -19,7 +20,7 @@ export class PathIntellisense implements CompletionItemProvider {
             return Promise.resolve([]);
         }
         
-        return this.provide(document.fileName, textWithinString, mappings, isImport, documentExtension);
+        return this.provide(document.fileName, textWithinString, mappings, isImport, documentExtension, importRange);
     }
 
     shouldProvide(textWithinString: string, isImport: boolean, mappings?: Mapping[]) {
@@ -38,13 +39,24 @@ export class PathIntellisense implements CompletionItemProvider {
         return false;
     }
 
-    provide(fileName, textWithinString, mappings, isImport, documentExtension) {
+    provide(fileName, textWithinString, mappings, isImport, documentExtension, importRange) {
         const path = getPath(fileName, textWithinString, mappings);
         
         return this.getChildrenOfPath(path).then(children => ([
             new UpCompletionItem(),
-            ...children.map(child => new PathCompletionItem(child, isImport, documentExtension))
+            ...children.map(child => new PathCompletionItem(child, importRange, isImport, documentExtension))
         ]));
+    }
+
+    importStringRange(document: TextDocument, position: Position): Range {
+        const line = document.getText(document.lineAt(position).range);
+        const textToPosition = line.substring(0, position.character);
+        const slashPosition = textToPosition.lastIndexOf('/');
+
+        const startPosition = new Position(position.line, slashPosition + 1);
+        const endPosition = position;
+
+        return new Range(startPosition, endPosition);
     }
 
     getMappings(): Mapping[] {

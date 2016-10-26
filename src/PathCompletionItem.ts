@@ -1,14 +1,17 @@
-import { CompletionItem, CompletionItemKind } from 'vscode';
+import { CompletionItem, CompletionItemKind, Range, TextEdit } from 'vscode';
 import { FileInfo } from './FileInfo';
 import { workspace } from 'vscode';
 
 const withExtension = workspace.getConfiguration('path-intellisense')['extensionOnImport'];
 
 export class PathCompletionItem extends CompletionItem {
-    constructor(fileInfo: FileInfo, isImport: boolean, documentExtension: string) {
+    private importRange: Range;
+    
+    constructor(fileInfo: FileInfo, importRange: Range, isImport: boolean, documentExtension: string) {
         super(fileInfo.file);
         
         this.kind = CompletionItemKind.File;
+        this.importRange = importRange;
         
         this.addGroupByFolderFile(fileInfo);
         this.removeExtension(fileInfo, isImport, documentExtension);
@@ -22,7 +25,7 @@ export class PathCompletionItem extends CompletionItem {
     addSlashForFolder(fileInfo: FileInfo) {
         if (!fileInfo.isFile) {
             this.label = `${fileInfo.file}/`;
-            this.insertText = fileInfo.file; 
+            this.textEdit = new TextEdit(this.importRange, fileInfo.file);
         }
     }
     
@@ -39,6 +42,7 @@ export class PathCompletionItem extends CompletionItem {
         }
 
         let index = fileInfo.file.lastIndexOf('.');
-        this.insertText = index != -1 ? fileInfo.file.substring(0, index) : fileInfo.file;
+        const name = index != -1 ? fileInfo.file.substring(0, index) : fileInfo.file;
+        this.textEdit = new TextEdit(this.importRange, name);
     }
 }
