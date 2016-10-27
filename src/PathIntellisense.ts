@@ -1,5 +1,5 @@
-import { CompletionItemProvider, TextDocument, Position, CompletionItem, Range, workspace } from 'vscode';
-import { isImportOrRequire, getTextWithinString } from './text-parser';
+import { CompletionItemProvider, TextDocument, Position, CompletionItem, workspace } from 'vscode';
+import { isImportOrRequire, getTextWithinString, importStringRange } from './text-parser';
 import { getPath, extractExtension, Mapping } from './fs-functions';
 import { PathCompletionItem } from './PathCompletionItem';
 import { UpCompletionItem } from './UpCompletionItem';
@@ -11,7 +11,7 @@ export class PathIntellisense implements CompletionItemProvider {
     provideCompletionItems(document: TextDocument, position: Position): Thenable<CompletionItem[]> {
         const textCurrentLine = document.getText(document.lineAt(position).range);
         const textWithinString = getTextWithinString(textCurrentLine, position.character);
-        const importRange = this.importStringRange(document, position);
+        const importRange = importStringRange(textCurrentLine, position);
         const isImport = isImportOrRequire(textCurrentLine);
         const documentExtension = extractExtension(document);
         const mappings = this.getMappings();
@@ -46,17 +46,6 @@ export class PathIntellisense implements CompletionItemProvider {
             new UpCompletionItem(),
             ...children.map(child => new PathCompletionItem(child, importRange, isImport, documentExtension))
         ]));
-    }
-
-    importStringRange(document: TextDocument, position: Position): Range {
-        const line = document.getText(document.lineAt(position).range);
-        const textToPosition = line.substring(0, position.character);
-        const slashPosition = textToPosition.lastIndexOf('/');
-
-        const startPosition = new Position(position.line, slashPosition + 1);
-        const endPosition = position;
-
-        return new Range(startPosition, endPosition);
     }
 
     getMappings(): Mapping[] {
