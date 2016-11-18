@@ -1,6 +1,7 @@
 import { CompletionItem, CompletionItemKind } from 'vscode';
 import { FileInfo } from './FileInfo';
 import { workspace } from 'vscode';
+import { shallAutoSlash as shallAutoSlashAfterFolder} from './config';
 
 const withExtension = workspace.getConfiguration('path-intellisense')['extensionOnImport'];
 
@@ -22,7 +23,12 @@ export class PathCompletionItem extends CompletionItem {
     addSlashForFolder(fileInfo: FileInfo) {
         if (!fileInfo.isFile) {
             this.label = `${fileInfo.file}/`;
-            this.insertText = fileInfo.file; 
+           
+            if(shallAutoSlashAfterFolder()) {
+              this.insertText = `${fileInfo.file}/`; 
+            } else {
+              this.insertText = `${fileInfo.file}`; 
+            }
         }
     }
     

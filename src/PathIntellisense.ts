@@ -3,6 +3,7 @@ import { isImportOrRequire, getTextWithinString } from './text-parser';
 import { getPath, extractExtension, Mapping } from './fs-functions';
 import { PathCompletionItem } from './PathCompletionItem';
 import { UpCompletionItem } from './UpCompletionItem';
+import { shallAutoSlash } from './config';
 
 export class PathIntellisense implements CompletionItemProvider {
     
@@ -40,11 +41,12 @@ export class PathIntellisense implements CompletionItemProvider {
 
     provide(fileName, textWithinString, mappings, isImport, documentExtension) {
         const path = getPath(fileName, textWithinString, mappings);
-        
-        return this.getChildrenOfPath(path).then(children => ([
-            new UpCompletionItem(),
-            ...children.map(child => new PathCompletionItem(child, isImport, documentExtension))
-        ]));
+        if(textWithinString.endsWith("/")) {
+          return this.getChildrenOfPath(path).then(children => ([
+              new UpCompletionItem(),
+              ...children.map(child => new PathCompletionItem(child, isImport, documentExtension))
+          ]));
+        } else return [];
     }
 
     getMappings(): Mapping[] {
