@@ -33,6 +33,14 @@ Per default, hidden files are not displayed. Set this to true to show hidden fil
 }
 ```
 
+### Auto Slash when navigating to folder
+Per default, the autocompletion does not add a slash after a directory.
+```javascript
+{
+	"path-intellisense.autoSlashAfterDirectory": false,
+}
+```
+
 ### Mappings
 Define custom mappings which can be useful for using absolute paths or in combination with webpack resolve options.
 

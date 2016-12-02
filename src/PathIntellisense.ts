@@ -3,6 +3,7 @@ import { isImportOrRequire, getTextWithinString, importStringRange } from './tex
 import { getPath, extractExtension, Mapping } from './fs-functions';
 import { PathCompletionItem } from './PathCompletionItem';
 import { UpCompletionItem } from './UpCompletionItem';
+import { shallAutoSlash } from './config';
 
 export class PathIntellisense implements CompletionItemProvider {
     
