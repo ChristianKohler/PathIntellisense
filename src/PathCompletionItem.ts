@@ -1,6 +1,7 @@
 import { CompletionItem, CompletionItemKind, Range, TextEdit } from 'vscode';
 import { FileInfo } from './FileInfo';
 import { workspace } from 'vscode';
+import { shallAutoSlash as shallAutoSlashAfterFolder} from './config';
 
 const withExtension = workspace.getConfiguration('path-intellisense')['extensionOnImport'];
 
@@ -25,7 +26,8 @@ export class PathCompletionItem extends CompletionItem {
     addSlashForFolder(fileInfo: FileInfo) {
         if (!fileInfo.isFile) {
             this.label = `${fileInfo.file}/`;
-            this.textEdit = new TextEdit(this.importRange, fileInfo.file);
+            var newText = shallAutoSlashAfterFolder() ? `${fileInfo.file}/` : `${fileInfo.file}`;
+            this.textEdit = new TextEdit(this.importRange, newText);
         }
     }
     
@@ -42,7 +44,7 @@ export class PathCompletionItem extends CompletionItem {
         }
 
         let index = fileInfo.file.lastIndexOf('.');
-        const name = index != -1 ? fileInfo.file.substring(0, index) : fileInfo.file;
-        this.textEdit = new TextEdit(this.importRange, name);
+        const newText = index != -1 ? fileInfo.file.substring(0, index) : fileInfo.file;
+        this.textEdit = new TextEdit(this.importRange, newText);
     }
 }
