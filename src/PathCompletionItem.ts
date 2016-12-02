@@ -1,37 +1,34 @@
 import { CompletionItem, CompletionItemKind, Range, TextEdit } from 'vscode';
 import { FileInfo } from './FileInfo';
 import { workspace } from 'vscode';
-import { shallAutoSlash as shallAutoSlashAfterFolder} from './config';
+import { Config } from './config';
 
 const withExtension = workspace.getConfiguration('path-intellisense')['extensionOnImport'];
 
 export class PathCompletionItem extends CompletionItem {
-    private importRange: Range;
-    
-    constructor(fileInfo: FileInfo, importRange: Range, isImport: boolean, documentExtension: string) {
+    constructor(fileInfo: FileInfo, importRange: Range, isImport: boolean, documentExtension: string, config: Config) {
         super(fileInfo.file);
         
         this.kind = CompletionItemKind.File;
-        this.importRange = importRange;
         
         this.addGroupByFolderFile(fileInfo);
-        this.removeExtension(fileInfo, isImport, documentExtension);
-        this.addSlashForFolder(fileInfo);
+        this.removeExtension(fileInfo, isImport, documentExtension, importRange);
+        this.addSlashForFolder(fileInfo, importRange, config.autoSlash);
     }
     
     addGroupByFolderFile(fileInfo: FileInfo) {
         this.sortText = `${fileInfo.isFile ? 'b' : 'a'}_${fileInfo.file}`;
     }
     
-    addSlashForFolder(fileInfo: FileInfo) {
+    addSlashForFolder(fileInfo: FileInfo, importRange: Range, autoSlash: boolean) {
         if (!fileInfo.isFile) {
             this.label = `${fileInfo.file}/`;
-            var newText = shallAutoSlashAfterFolder() ? `${fileInfo.file}/` : `${fileInfo.file}`;
-            this.textEdit = new TextEdit(this.importRange, newText);
+            var newText = autoSlash ? `${fileInfo.file}/` : `${fileInfo.file}`;
+            this.textEdit = new TextEdit(importRange, newText);
         }
     }
     
-    removeExtension(fileInfo: FileInfo, isImport: boolean, documentExtension:string) {
+    removeExtension(fileInfo: FileInfo, isImport: boolean, documentExtension:string, importRange: Range) {
         if (!fileInfo.isFile || withExtension || !isImport) {
             return;
         }
@@ -45,6 +42,6 @@ export class PathCompletionItem extends CompletionItem {
 
         let index = fileInfo.file.lastIndexOf('.');
         const newText = index != -1 ? fileInfo.file.substring(0, index) : fileInfo.file;
-        this.textEdit = new TextEdit(this.importRange, newText);
+        this.textEdit = new TextEdit(importRange, newText);
     }
 }
