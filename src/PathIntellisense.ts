@@ -6,13 +6,13 @@ import { UpCompletionItem } from './UpCompletionItem';
 import { getConfig, Config } from './config';
 
 interface State {
-    config: Config,
-    fileName: string,
-    textCurrentLine: string,
-    textWithinString: string,
-    importRange: Range,
-    isImport: boolean,
-    documentExtension: string
+    config?: Config,
+    fileName?: string,
+    textCurrentLine?: string,
+    textWithinString?: string,
+    importRange?: Range,
+    isImport?: boolean,
+    documentExtension?: string
 }
 
 export class PathIntellisense implements CompletionItemProvider {

@@ -23,5 +23,9 @@ suite("PathIntellisense Require/Import Tests", () => {
 });
 
 function should(text, position) {
-    return new PathIntellisense(() => {}).shouldProvide(getTextWithinString(text, position), isImportOrRequire(text));
+    return new PathIntellisense(() => {}).shouldProvide({
+        config: { autoSlash: false, mappings: [] },
+        textWithinString: getTextWithinString(text, position), 
+        isImport: isImportOrRequire(text)
+    });
 }

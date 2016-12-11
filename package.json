@@ -2,7 +2,7 @@
     "name": "path-intellisense",
     "displayName": "Path Intellisense",
     "description": "Visual Studio Code plugin that autocompletes filenames",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "publisher": "christian-kohler",
     "engines": {
         "vscode": "^1.0.0"
@@ -37,6 +37,11 @@
                     "type": "boolean",
                     "default": false,
                     "description": "Show hidden files"
+                },
+                "path-intellisense.autoSlashAfterDirectory": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Automatically adds slash after directory"
                 }
             }
         }    

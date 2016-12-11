@@ -58,6 +58,10 @@ Use ${workspaceRoot} when the path should be relative to the current root of the
 
 ## History
 
+### v1.2.0
+- [Feature] Add Option to automatically add a slash after directory. Thank you @koelpinl #41
+- [Bug] Fixed autocompletion for names with dashes. Thank you @kasperekt #36
+
 ### v1.1.0
 - [Feature] Custom Mappings #19, #5
 - [Feature] Setting to enable display of hidden files #12
