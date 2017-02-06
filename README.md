@@ -14,6 +14,15 @@ Use [npm intellisense](https://marketplace.visualstudio.com/items?itemName=chris
 Something missing? Found a bug? - Create a pull request or an issue.
 [Github](https://github.com/ChristianKohler/PathIntellisense)
 
+## Are you a windows user?
+There is an issue on windows with the period key. See Issue https://github.com/ChristianKohler/NpmIntellisense/issues/12
+
+Add this to the keybinding:
+
+```javascript
+{ "key": ".", "command": "" }
+```
+
 ## Settings
 ### File extension in import statements
 Path Intellisense removes the file extension by default if the statement is a import statement. To enable file extensions set the following setting to true:
