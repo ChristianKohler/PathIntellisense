@@ -8,9 +8,9 @@ export interface Mapping {
     value: string
 }
 
-export function getChildrenOfPath(path) {
+export function getChildrenOfPath(path, showHiddenFiles) {
     return readdirPromise(path)
-        .then(files => files.filter(notHidden).map(f => new FileInfo(path, f)))
+        .then(files => files.filter(filename => showHiddenFiles || filename[0] !== '.').map(f => new FileInfo(path, f)))
         .catch(() => []);
 }
 
@@ -51,9 +51,4 @@ function readdirPromise(path: string) {
             }
         });
     });
-}
-
-function notHidden(filename) {
-    const showHiddenFiles = workspace.getConfiguration('path-intellisense')['showHiddenFiles'];
-    return showHiddenFiles || filename[0] !== '.';
 }

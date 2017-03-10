@@ -54,7 +54,7 @@ export class PathIntellisense implements CompletionItemProvider {
     provide(state: State) {
         const path = getPath(state.fileName, state.textWithinString, state.config.mappings);
         
-        return this.getChildrenOfPath(path).then(children => ([
+        return this.getChildrenOfPath(path, state.config.showHiddenFiles).then(children => ([
             new UpCompletionItem(),
             ...children.map(child => new PathCompletionItem(child, state.importRange, state.isImport, state.documentExtension, state.config))
         ]));

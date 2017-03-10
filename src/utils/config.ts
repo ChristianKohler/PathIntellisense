@@ -3,7 +3,8 @@ import { Mapping } from "./fs-functions";
 
 export interface Config {
     autoSlash: boolean,
-    mappings: Mapping[]
+    mappings: Mapping[],
+    showHiddenFiles: boolean
 }
 
 export function getConfig(): Config {
@@ -11,7 +12,8 @@ export function getConfig(): Config {
 
     return {
         autoSlash: configuration['autoSlashAfterDirectory'],
-        mappings: getMappings(configuration)
+        mappings: getMappings(configuration),
+        showHiddenFiles: configuration['showHiddenFiles']
     }
 }
 
