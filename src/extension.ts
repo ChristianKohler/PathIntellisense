@@ -1,7 +1,7 @@
 'use strict';
 import { ExtensionContext, languages } from 'vscode';
 import { PathIntellisense } from './PathIntellisense';
-import { getChildrenOfPath } from './fs-functions';
+import { getChildrenOfPath } from './utils/fs-functions';
 
 export function activate(context: ExtensionContext) {
 	const provider = new PathIntellisense(getChildrenOfPath);

@@ -1,5 +1,5 @@
 import { CompletionItem, CompletionItemKind } from 'vscode';
-import { getConfig } from './config';
+import { getConfig } from '../utils/config';
 
 export class UpCompletionItem extends CompletionItem {
     constructor() {

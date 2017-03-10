@@ -1,9 +1,9 @@
 import { CompletionItemProvider, TextDocument, Position, CompletionItem, workspace, Range } from 'vscode';
-import { isImportOrRequire, getTextWithinString, importStringRange } from './text-parser';
-import { getPath, extractExtension, Mapping } from './fs-functions';
-import { PathCompletionItem } from './PathCompletionItem';
-import { UpCompletionItem } from './UpCompletionItem';
-import { getConfig, Config } from './config';
+import { isImportOrRequire, getTextWithinString, importStringRange } from './utils/text-parser';
+import { getPath, extractExtension, Mapping } from './utils/fs-functions';
+import { PathCompletionItem } from './completionItems/PathCompletionItem';
+import { UpCompletionItem } from './completionItems/UpCompletionItem';
+import { getConfig, Config } from './utils/config';
 
 interface State {
     config?: Config,

@@ -1,5 +1,5 @@
 import { workspace, WorkspaceConfiguration } from 'vscode';
-import { Mapping } from './fs-functions';
+import { Mapping } from "./fs-functions";
 
 export interface Config {
     autoSlash: boolean,

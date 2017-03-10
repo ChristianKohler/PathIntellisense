@@ -1,6 +1,6 @@
 import { readdir } from 'fs';
 import { resolve as resolvePath, sep as dirSeparator, normalize } from 'path';
-import { FileInfo } from './FileInfo';
+import { FileInfo } from './file-info';
 import { TextDocument, workspace } from 'vscode';
 
 export interface Mapping {

@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { Position } from 'vscode';
-import { isImportOrRequire, getTextWithinString, importStringRange } from '../src/text-parser';
+import { isImportOrRequire, getTextWithinString, importStringRange } from '../src/utils/text-parser';
 
 suite("Text Parser Tests", () => {
 

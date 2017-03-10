@@ -1,7 +1,7 @@
 import { CompletionItem, CompletionItemKind, Range, TextEdit } from 'vscode';
-import { FileInfo } from './FileInfo';
+import { FileInfo } from '../utils/file-info';
 import { workspace } from 'vscode';
-import { Config } from './config';
+import { Config } from '../utils/config';
 
 const withExtension = workspace.getConfiguration('path-intellisense')['extensionOnImport'];
 

@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { getPath, Mapping } from '../src/fs-functions';
+import { getPath, Mapping } from '../src/utils/fs-functions';
 
 suite("GetPath", () => {
     test("resolves folder", () => {
