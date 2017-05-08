@@ -1,5 +1,5 @@
 import { CompletionItemProvider, TextDocument, Position, CompletionItem, workspace, Range } from 'vscode';
-import { isImportOrRequire, getTextWithinString, importStringRange } from './utils/text-parser';
+import { isImportExportOrRequire, getTextWithinString, importStringRange } from './utils/text-parser';
 import { getPath, extractExtension, Mapping } from './utils/fs-functions';
 import { PathCompletionItem } from './completionItems/PathCompletionItem';
 import { UpCompletionItem } from './completionItems/UpCompletionItem';
@@ -34,7 +34,7 @@ export class PathIntellisense implements CompletionItemProvider {
             textCurrentLine,
             textWithinString: getTextWithinString(textCurrentLine, position.character),
             importRange: importStringRange(textCurrentLine, position),
-            isImport: isImportOrRequire(textCurrentLine),
+            isImport: isImportExportOrRequire(textCurrentLine),
             documentExtension: extractExtension(document)
         };
         

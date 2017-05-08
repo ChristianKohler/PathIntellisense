@@ -1,17 +1,17 @@
 import * as assert from 'assert';
 import { Position } from 'vscode';
-import { isImportOrRequire, getTextWithinString, importStringRange } from '../src/utils/text-parser';
+import { isImportExportOrRequire, getTextWithinString, importStringRange } from '../src/utils/text-parser';
 
 suite("Text Parser Tests", () => {
 
     test("ChecksWhenIsImportStatement", () => {
-        assert.equal(true, isImportOrRequire('import { } from'));
-        assert.equal(false, isImportOrRequire('var x = 1'));
+        assert.equal(true, isImportExportOrRequire('import { } from'));
+        assert.equal(false, isImportExportOrRequire('var x = 1'));
     });
     
     test("ChecksWhenIsRequireStatement", () => {
-        assert.equal(true, isImportOrRequire('var x = require()'));
-        assert.equal(false, isImportOrRequire('var x = 1'));
+        assert.equal(true, isImportExportOrRequire('var x = require()'));
+        assert.equal(false, isImportExportOrRequire('var x = 1'));
     });
     
     test("GetsTextWithinString", () => {
