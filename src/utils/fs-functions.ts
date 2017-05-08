@@ -2,15 +2,19 @@ import { readdir } from 'fs';
 import { resolve as resolvePath, sep as dirSeparator, normalize } from 'path';
 import { FileInfo } from './file-info';
 import { TextDocument, workspace } from 'vscode';
+import { Config } from "./config";
+import * as minimatch from 'minimatch';
 
 export interface Mapping {
     key: string,
     value: string
 }
 
-export function getChildrenOfPath(path, showHiddenFiles) {
+export function getChildrenOfPath(path: string, config: Config) {
     return readdirPromise(path)
-        .then(files => files.filter(filename => showHiddenFiles || filename[0] !== '.').map(f => new FileInfo(path, f)))
+        .then(files => files
+            .filter(filename => filterFile(filename, config))
+            .map(f => new FileInfo(path, f)))
         .catch(() => []);
 }
 
@@ -51,4 +55,26 @@ function readdirPromise(path: string) {
             }
         });
     });
+}
+
+function filterFile(filename: string, config: Config) {
+    if (config.showHiddenFiles) {
+        return true;
+    }
+    return isFileHidden(filename, config) ? false : true;
+}
+
+function isFileHidden(filename: string, config: Config) {
+    const hasDotPrefix = filename[0] === '.';
+    
+    // files.exclude has the following form. key is the glob
+    // {
+    //    "**/*.js": true
+    //    "*.git": true
+    // }
+    const hiddenByVsCode = config.filesExclude && Object.keys(config.filesExclude).some(key => {
+        return config.filesExclude[key] && minimatch(filename, key);
+    });
+
+    return hasDotPrefix || hiddenByVsCode;
 }

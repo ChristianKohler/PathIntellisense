@@ -28,7 +28,8 @@ function should(text, position) {
             autoSlash: false, 
             mappings: [], 
             showHiddenFiles: true,
-            withExtension: true
+            withExtension: true,
+            filesExclude: []
         },
         textWithinString: getTextWithinString(text, position), 
         isImport: isImportOrRequire(text)

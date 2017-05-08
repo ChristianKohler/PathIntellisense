@@ -22,6 +22,7 @@ export class PathIntellisense implements CompletionItemProvider {
     constructor(private getChildrenOfPath: Function) {
         this.config = getConfig();
         workspace.onDidChangeConfiguration(() => this.config = getConfig());
+        
     }
     
     provideCompletionItems(document: TextDocument, position: Position): Thenable<CompletionItem[]> {
@@ -59,7 +60,7 @@ export class PathIntellisense implements CompletionItemProvider {
     provide(request: Request) {
         const path = getPath(request.fileName, request.textWithinString, request.config.mappings);
         
-        return this.getChildrenOfPath(path, request.config.showHiddenFiles).then(children => ([
+        return this.getChildrenOfPath(path, request.config).then(children => ([
             new UpCompletionItem(),
             ...children.map(child => new PathCompletionItem(child, request.importRange, request.isImport, request.documentExtension, request.config))
         ]));

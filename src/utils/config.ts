@@ -5,7 +5,8 @@ export interface Config {
     autoSlash: boolean,
     mappings: Mapping[],
     showHiddenFiles: boolean,
-    withExtension: boolean
+    withExtension: boolean,
+    filesExclude: {}[]
 }
 
 export function getConfig(): Config {
@@ -15,7 +16,8 @@ export function getConfig(): Config {
         autoSlash: configuration['autoSlashAfterDirectory'],
         mappings: getMappings(configuration),
         showHiddenFiles: configuration['showHiddenFiles'],
-        withExtension: configuration['extensionOnImport']
+        withExtension: configuration['extensionOnImport'],
+        filesExclude: workspace.getConfiguration('files')['exclude']
     }
 }
 
