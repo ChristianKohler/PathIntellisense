@@ -3,7 +3,7 @@ import { isImportExportOrRequire, getTextWithinString, importStringRange } from 
 import { getPath, extractExtension, Mapping } from './utils/fs-functions';
 import { PathCompletionItem } from './completionItems/PathCompletionItem';
 import { UpCompletionItem } from './completionItems/UpCompletionItem';
-import { getConfig, Config } from './utils/config';
+import { getConfig, Config, getTsConfig } from './utils/config';
 
 interface Request {
     config?: Config,
@@ -18,11 +18,15 @@ interface Request {
 export class PathIntellisense implements CompletionItemProvider {
     
     private config: Config;
+    private tsConfig: {};
 
     constructor(private getChildrenOfPath: Function) {
-        this.config = getConfig();
-        workspace.onDidChangeConfiguration(() => this.config = getConfig());
-        
+        this.setConfig();
+        workspace.onDidChangeConfiguration(() => this.setConfig());
+        getTsConfig().then(tsconfig => {
+            this.tsConfig = tsconfig;
+            this.setConfig();
+        });
     }
     
     provideCompletionItems(document: TextDocument, position: Position): Thenable<CompletionItem[]> {
@@ -64,5 +68,9 @@ export class PathIntellisense implements CompletionItemProvider {
             new UpCompletionItem(),
             ...children.map(child => new PathCompletionItem(child, request.importRange, request.isImport, request.documentExtension, request.config))
         ]));
+    }
+
+    setConfig() {
+        this.config = getConfig(this.tsConfig);
     }
 }

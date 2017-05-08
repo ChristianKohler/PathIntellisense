@@ -1,5 +1,6 @@
 import { workspace, WorkspaceConfiguration } from 'vscode';
 import { Mapping } from "./fs-functions";
+import { readFileSync } from "fs";
 
 export interface Config {
     autoSlash: boolean,
@@ -9,16 +10,42 @@ export interface Config {
     filesExclude: {}[]
 }
 
-export function getConfig(): Config {
+export function getConfig(tsconfig?): Config {
     const configuration = workspace.getConfiguration('path-intellisense');
 
     return {
         autoSlash: configuration['autoSlashAfterDirectory'],
-        mappings: getMappings(configuration),
+        mappings: [...getMappings(configuration), ...createMappingsFromTsConfig(tsconfig)],
         showHiddenFiles: configuration['showHiddenFiles'],
         withExtension: configuration['extensionOnImport'],
         filesExclude: workspace.getConfiguration('files')['exclude']
     }
+}
+
+export function getTsConfig() {
+    return workspace.findFiles('tsconfig.json', '**/node_modules/**').then(files => {   
+        if (files && files[0]) {
+            return JSON.parse(readFileSync(files[0].fsPath).toString());
+        } else {
+            return {};
+        }
+    });
+}
+
+function createMappingsFromTsConfig(tsconfig): Mapping[] {
+    const mappings: Mapping[] = [];
+
+    if (tsconfig && tsconfig.compilerOptions) {
+        const { baseUrl, paths } = tsconfig.compilerOptions;
+
+        if (baseUrl) {
+            mappings.push({ key: baseUrl, value: `${workspace.rootPath}/${baseUrl}` })
+        }
+
+        // Todo: paths property
+    }
+
+    return mappings;
 }
 
 function getMappings(configuration: WorkspaceConfiguration): Mapping[] {

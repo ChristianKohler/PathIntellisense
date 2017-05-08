@@ -23,6 +23,26 @@ Add this to the keybinding:
 { "key": ".", "command": "" }
 ```
 
+## TsConfig support
+### BaseUrl
+Pathintellisense uses the ts.config.compilerOptions.baseUrl as a mapping. So no need to define it twice. There is no support for paths at the moment.
+
+For example:
+
+```javascript
+{
+	"baseUrl": "src",
+}
+```
+
+would allow to type:
+
+```javascript
+{
+	import {} from 'src/mymodule';
+}
+```
+
 ## Settings
 ### File extension in import statements
 Path Intellisense removes the file extension by default if the statement is a import statement. To enable file extensions set the following setting to true:

@@ -1,6 +1,7 @@
 ## Changelog
 ### v1.3.0
 - [Feature] Files from "files.exclude" are now ignored as well
+- [Feature] Basic ts config support
 - [Bug] Fixed #26
 - [Bug] Fixed #56
 - [Bug] Fixed #59
