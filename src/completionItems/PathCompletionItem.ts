@@ -3,8 +3,6 @@ import { FileInfo } from '../utils/file-info';
 import { workspace } from 'vscode';
 import { Config } from '../utils/config';
 
-const withExtension = workspace.getConfiguration('path-intellisense')['extensionOnImport'];
-
 export class PathCompletionItem extends CompletionItem {
     constructor(fileInfo: FileInfo, importRange: Range, isImport: boolean, documentExtension: string, config: Config) {
         super(fileInfo.file);
@@ -12,7 +10,7 @@ export class PathCompletionItem extends CompletionItem {
         this.kind = CompletionItemKind.File;
         
         this.addGroupByFolderFile(fileInfo);
-        this.removeExtension(fileInfo, isImport, documentExtension, importRange);
+        this.removeExtension(config.withExtension, fileInfo, isImport, documentExtension, importRange);
         this.addSlashForFolder(fileInfo, importRange, config.autoSlash);
     }
     
@@ -28,7 +26,7 @@ export class PathCompletionItem extends CompletionItem {
         }
     }
     
-    removeExtension(fileInfo: FileInfo, isImport: boolean, documentExtension:string, importRange: Range) {
+    removeExtension(withExtension: boolean, fileInfo: FileInfo, isImport: boolean, documentExtension:string, importRange: Range) {
         if (!fileInfo.isFile || withExtension || !isImport) {
             return;
         }
