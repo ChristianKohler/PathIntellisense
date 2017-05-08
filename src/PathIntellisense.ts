@@ -38,7 +38,7 @@ export class PathIntellisense implements CompletionItemProvider {
     shouldProvide(state: State) {
         const typedAnything = state.textWithinString && state.textWithinString.length > 0;
         const startsWithDot = typedAnything && state.textWithinString[0] === '.';
-        const startsWithMapping = state.config.mappings.some(mapping => state.textWithinString.indexOf(mapping.key) === 0);
+        const startsWithMapping = typedAnything && state.config.mappings.some(mapping => state.textWithinString.indexOf(mapping.key) === 0);
 
         if (state.isImport && (startsWithDot || startsWithMapping)) {
             return true;
