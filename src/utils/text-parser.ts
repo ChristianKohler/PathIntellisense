@@ -1,9 +1,10 @@
 import { Range, Position, TextDocument } from 'vscode';
 
-export function isImportOrRequire(text) {
+export function isImportExportOrRequire(text) {
     let isImport = text.substring(0, 6) === 'import';
+    let isExport = text.substring(0, 6) === 'export';
     let isRequire = text.indexOf('require(') != -1;
-    return isImport || isRequire;
+    return isImport || isExport || isRequire;
 }
 
 export function getTextWithinString(text: string, position: number) {
