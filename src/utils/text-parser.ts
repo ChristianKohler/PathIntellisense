@@ -8,7 +8,7 @@ export function isImportOrRequire(text) {
 
 export function getTextWithinString(text: string, position: number) {
     const textToPosition = text.substring(0, position);
-    const quoatationPosition = Math.max(textToPosition.lastIndexOf('\"'), textToPosition.lastIndexOf('\''), textToPosition.lastIndexOf('\`');
+    const quoatationPosition = Math.max(textToPosition.lastIndexOf('\"'), textToPosition.lastIndexOf('\''), textToPosition.lastIndexOf('\`'));
     return quoatationPosition != -1 ? textToPosition.substring(quoatationPosition + 1, textToPosition.length) : undefined;
 }
 
