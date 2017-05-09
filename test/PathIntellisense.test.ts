@@ -29,6 +29,7 @@ function should(text, position) {
             mappings: [], 
             showHiddenFiles: true,
             withExtension: true,
+            absolutePathToWorkspace: false,
             filesExclude: []
         },
         textWithinString: getTextWithinString(text, position), 

@@ -8,7 +8,35 @@ suite("GetPath", () => {
 
         const resolved = getPath(fileNameUnix, text);
         
-        assert.equal(resolved, "/Users/dummy/src/sub");
+        assert.equal(resolved, "/Users/dummy/src/sub/");
+    });
+
+    test("resolves absolute path to root if no rootPath defined", () => {
+        const fileNameUnix = "/Users/dummy/src/dummy.ts";
+        const text = "/sub/";
+
+        const resolved = getPath(fileNameUnix, text);
+        
+        assert.equal(resolved, "/sub/");
+    });
+
+    test("resolves / to root if no rootPath defined", () => {
+        const fileNameUnix = "/Users/dummy/src/dummy.ts";
+        const text = "/";
+
+        const resolved = getPath(fileNameUnix, text);
+        
+        assert.equal(resolved, "/");
+    });
+
+    test("resolves absoute path to workspace if rootPath defined", () => {
+        const fileNameUnix = "/Users/dummy/src/dummy.ts";
+        const text = "/sub/";
+        const rootPath = "/Users/dummy";
+
+        const resolved = getPath(fileNameUnix, text, rootPath);
+        
+        assert.equal(resolved, "/Users/dummy/sub/");
     });
 
     test("resolves folder up", () => {
@@ -17,7 +45,7 @@ suite("GetPath", () => {
 
         const resolved = getPath(fileNameUnix, text);
         
-        assert.equal(resolved, "/Users/dummy/src");
+        assert.equal(resolved, "/Users/dummy/src/");
     });
 
     test("ignores everything after last slash", () => {
@@ -26,7 +54,7 @@ suite("GetPath", () => {
 
         const resolved = getPath(fileNameUnix, text);
         
-        assert.equal(resolved, "/Users/dummy/src");
+        assert.equal(resolved, "/Users/dummy/src/");
     });
 
     test("replaces mapping if found", () => {
@@ -36,21 +64,21 @@ suite("GetPath", () => {
             { key: "~", value: "/root/" }
         ];
 
-        const resolved = getPath(fileNameUnix, text, mappings);
+        const resolved = getPath(fileNameUnix, text, null, mappings);
         
-        assert.equal(resolved, "/root/src");
+        assert.equal(resolved, "/root/src/");
     });
 
     test("replaces mapping multiple chars if found", () => {
         const fileNameUnix = "/Users/dummy/src/dummy.ts";
-        const text = "awesome/src/";
+        const text = "awesome/src/sub/";
         const mappings: Mapping[] = [
             { key: "awesome", value: "/root/" }
         ];
 
-        const resolved = getPath(fileNameUnix, text, mappings);
+        const resolved = getPath(fileNameUnix, text, null, mappings);
         
-        assert.equal(resolved, "/root/src");
+        assert.equal(resolved, "/root/src/sub/");
     });
 
     test("ignores mapping if not found", () => {
@@ -60,8 +88,8 @@ suite("GetPath", () => {
             { key: "~", value: "/root/" }
         ];
 
-        const resolved = getPath(fileNameUnix, text, mappings);
+        const resolved = getPath(fileNameUnix, text, null, mappings);
         
-        assert.equal(resolved, "/Users/dummy/src/sub");
+        assert.equal(resolved, "/Users/dummy/src/sub/");
     });
 });

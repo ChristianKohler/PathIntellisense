@@ -1,5 +1,5 @@
 import { readdir } from 'fs';
-import { resolve as resolvePath, sep as dirSeparator, normalize } from 'path';
+import * as path from 'path';
 import { FileInfo } from './file-info';
 import { TextDocument, workspace } from 'vscode';
 import { Config } from "./config";
@@ -18,16 +18,33 @@ export function getChildrenOfPath(path: string, config: Config) {
         .catch(() => []);
 }
 
-export function getPath(fileName: string, text: string, mappings?: Mapping[]) : string {        
+/**
+ * @param fileName  {string} current filename the look up is done. Absolute path
+ * @param text      {string} text in import string. e.g. './src/'
+ */
+export function getPath(fileName: string, text: string, rootPath?: string, mappings?: Mapping[]) : string {        
+    const textAfterLastSlashRemoved = text.substring(0, text.lastIndexOf(path.sep) + 1);
+    const normalizedText = path.normalize(textAfterLastSlashRemoved);
+    const isPathAbsolute = normalizedText.startsWith(path.sep);
+
+    let rootFolder = path.dirname(fileName);
+    let pathEntered = normalizedText;
+
+    // Search a mapping for the current text. First mapping is used where text starts with mapping
     const mapping = mappings && mappings.reduce((prev, curr) => {
-        return prev || (normalize(text).indexOf(curr.key) === 0 && curr)
+        return prev || (normalizedText.startsWith(curr.key) && curr)
     }, undefined);
 
-    const referencedFolder = mapping ? mapping.value : fileName.substring(0, fileName.lastIndexOf(dirSeparator));
-    const lastFolderInText = normalize(text).substring(0, normalize(text).lastIndexOf(dirSeparator));
-    const pathInText = mapping ? `.${lastFolderInText.substring(mapping.key.length, lastFolderInText.length)}`: lastFolderInText;
+    if (mapping) {
+        rootFolder = mapping.value;
+        pathEntered = normalizedText.substring(mapping.key.length, normalizedText.length);
+    } 
+    
+    if(isPathAbsolute) {
+        rootFolder = rootPath || '';
+    }
 
-    return resolvePath(referencedFolder, pathInText);
+    return path.join(rootFolder, pathEntered);
 }
 
 export function extractExtension(document: TextDocument) {
@@ -65,16 +82,17 @@ function filterFile(filename: string, config: Config) {
 }
 
 function isFileHidden(filename: string, config: Config) {
-    const hasDotPrefix = filename[0] === '.';
-    
-    // files.exclude has the following form. key is the glob
-    // {
-    //    "**/*.js": true
-    //    "*.git": true
-    // }
-    const hiddenByVsCode = config.filesExclude && Object.keys(config.filesExclude).some(key => {
-        return config.filesExclude[key] && minimatch(filename, key);
-    });
+    return filename.startsWith('.') || isFileHiddenByVsCode(filename, config);
+}
 
-    return hasDotPrefix || hiddenByVsCode;
+/**
+ * files.exclude has the following form. key is the glob
+ * {
+ *    "**//*.js": true
+ *    "**//*.js": true "*.git": true
+ * }
+ */
+function isFileHiddenByVsCode(filename: string, config: Config) {
+    return config.filesExclude && Object.keys(config.filesExclude)
+        .some(key => config.filesExclude[key] && minimatch(filename, key));
 }

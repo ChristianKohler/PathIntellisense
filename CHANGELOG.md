@@ -1,4 +1,8 @@
 ## Changelog
+
+### v1.4.0
+- [Feature] Added setting to define how to handle absolute paths Fixes #45, #55
+
 ### v1.3.0
 - [Feature] Files from "files.exclude" are now ignored as well
 - [Feature] Basic ts config support

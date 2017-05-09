@@ -62,7 +62,7 @@ export class PathIntellisense implements CompletionItemProvider {
     }
 
     provide(request: Request) {
-        const path = getPath(request.fileName, request.textWithinString, request.config.mappings);
+        const path = getPath(request.fileName, request.textWithinString, request.config.absolutePathToWorkspace ? workspace.rootPath : null, request.config.mappings);
         
         return this.getChildrenOfPath(path, request.config).then(children => ([
             new UpCompletionItem(),

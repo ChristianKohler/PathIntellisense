@@ -7,6 +7,7 @@ export interface Config {
     mappings: Mapping[],
     showHiddenFiles: boolean,
     withExtension: boolean,
+    absolutePathToWorkspace: boolean,
     filesExclude: {}[]
 }
 
@@ -18,6 +19,7 @@ export function getConfig(tsconfig?): Config {
         mappings: [...getMappings(configuration), ...createMappingsFromTsConfig(tsconfig)],
         showHiddenFiles: configuration['showHiddenFiles'],
         withExtension: configuration['extensionOnImport'],
+        absolutePathToWorkspace: configuration['absolutePathToWorkspace'],
         filesExclude: workspace.getConfiguration('files')['exclude']
     }
 }
