@@ -1,5 +1,8 @@
 ## Changelog
 
+### v1.4.1
+- [Hotfix] Fresh rebuild
+
 ### v1.4.0
 - [Feature] Added setting to define how to handle absolute paths Fixes #45, #55
 
