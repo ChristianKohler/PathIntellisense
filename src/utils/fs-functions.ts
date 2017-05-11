@@ -23,8 +23,8 @@ export function getChildrenOfPath(path: string, config: Config) {
  * @param text      {string} text in import string. e.g. './src/'
  */
 export function getPath(fileName: string, text: string, rootPath?: string, mappings?: Mapping[]) : string {        
-    const textAfterLastSlashRemoved = text.substring(0, text.lastIndexOf(path.sep) + 1);
-    const normalizedText = path.normalize(textAfterLastSlashRemoved);
+    const normalizedText = path.normalize(text);
+    const textAfterLastSlashRemoved = normalizedText.substring(0, normalizedText.lastIndexOf(path.sep) + 1);
     const isPathAbsolute = normalizedText.startsWith(path.sep);
 
     let rootFolder = path.dirname(fileName);

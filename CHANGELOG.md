@@ -1,5 +1,8 @@
 ## Changelog
 
+### v1.4.2
+- [Hotfix] Fixed broken intellisense on windows
+
 ### v1.4.1
 - [Hotfix] Fresh rebuild
 
