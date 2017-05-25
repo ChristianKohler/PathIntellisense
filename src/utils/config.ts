@@ -11,12 +11,16 @@ export interface Config {
     filesExclude: {}[]
 }
 
-export function getConfig(tsconfig?): Config {
+export function getConfig(workspaceConfigs: Object[] = []): Config {
     const configuration = workspace.getConfiguration('path-intellisense');
+
+    const workspaceMappings: Mapping[] = workspaceConfigs.reduce<Mapping[]>((previous, config) => {
+        return previous.concat(createMappingsFromWorkspaceConfig(config))
+    }, [])
 
     return {
         autoSlash: configuration['autoSlashAfterDirectory'],
-        mappings: [...getMappings(configuration), ...createMappingsFromTsConfig(tsconfig)],
+        mappings: [...getMappings(configuration), ...workspaceMappings],
         showHiddenFiles: configuration['showHiddenFiles'],
         withExtension: configuration['extensionOnImport'],
         absolutePathToWorkspace: configuration['absolutePathToWorkspace'],
@@ -24,17 +28,17 @@ export function getConfig(tsconfig?): Config {
     }
 }
 
-export function getTsConfig() {
-    return workspace.findFiles('tsconfig.json', '**/node_modules/**').then(files => {   
-        if (files && files[0]) {
-            return JSON.parse(readFileSync(files[0].fsPath).toString());
+export function getWorkspaceConfigs(): PromiseLike<Object[]> {
+    return workspace.findFiles('[tj]sconfig.json', '**/node_modules/**').then(files => {
+        if (files && files.length > 0) {
+            return files.map(file => JSON.parse(readFileSync(file.fsPath).toString()));
         } else {
-            return {};
+            return [];
         }
     });
 }
 
-function createMappingsFromTsConfig(tsconfig): Mapping[] {
+function createMappingsFromWorkspaceConfig(tsconfig): Mapping[] {
     const mappings: Mapping[] = [];
 
     if (tsconfig && tsconfig.compilerOptions) {
