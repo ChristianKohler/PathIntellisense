@@ -81,12 +81,13 @@ Per default, the autocompletion does not add a slash after a directory.
 ```
 
 ### Absolute paths
-Per default, absolute paths are resolved within the current workspace root path. 
+Per default, absolute paths are resolved within the current workspace root path.
 Set it to false to resolve absolute paths to the disk root path.
 ```javascript
 {
 	"path-intellisense.absolutePathToWorkspace": true,
 }
+```
 
 ### Mappings
 Define custom mappings which can be useful for using absolute paths or in combination with webpack resolve options.
