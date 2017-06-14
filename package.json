@@ -64,6 +64,7 @@
     "vscode": "^0.11.0"
   },
   "dependencies": {
+    "json5": "0.5.1",
     "minimatch": "^3.0.4"
   }
 }
