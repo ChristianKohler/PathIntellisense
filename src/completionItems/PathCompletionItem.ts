@@ -46,14 +46,18 @@ export class PathCompletionItem extends CompletionItem {
     }
 
     cleanupSass(fileInfo: FileInfo, documentExtension: string, importRange: Range) {
-        // If the current file or the completion file is not a sass or scss file don't do anything
-        if (
-            ['sass', 'scss'].indexOf(documentExtension) == -1 ||
-            ['sass', 'scss'].indexOf(path.parse(fileInfo.file).ext.replace(/^\./, '')) == -1
-        ) {
+        // If the current file is not a sass or scss file don't do anything
+        if (['sass', 'scss'].indexOf(documentExtension) == -1) {
             return;
         }
 
+        // If the insert item is not a sass or scss file (such as a css file) use actual file name
+        if (['sass', 'scss'].indexOf(path.parse(fileInfo.file).ext.replace(/^\./, '')) == -1) {
+            return;
+        }
+
+        // We are currently in a sass/scss file and the insert file is also a sass/scss file
+        // make changes to the insert text and save the text edit
         const newText = fileInfo.file.replace(/^_/, '').replace(new RegExp(`\.${documentExtension}$`), '')
         this.textEdit = new TextEdit(importRange, newText)
     }
