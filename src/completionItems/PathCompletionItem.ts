@@ -2,6 +2,7 @@ import { CompletionItem, CompletionItemKind, Range, TextEdit } from 'vscode';
 import { FileInfo } from '../utils/file-info';
 import { workspace } from 'vscode';
 import { Config } from '../utils/config';
+import * as path from 'path';
 
 export class PathCompletionItem extends CompletionItem {
     constructor(fileInfo: FileInfo, importRange: Range, isImport: boolean, documentExtension: string, config: Config) {
@@ -45,7 +46,11 @@ export class PathCompletionItem extends CompletionItem {
     }
 
     cleanupSass(fileInfo: FileInfo, documentExtension: string, importRange: Range) {
-        if (['sass', 'scss'].indexOf(documentExtension) == -1) {
+        // If the current file or the completion file is not a sass or scss file don't do anything
+        if (
+            ['sass', 'scss'].indexOf(documentExtension) == -1 ||
+            ['sass', 'scss'].indexOf(path.parse(fileInfo.file).ext.replace(/^\./, '')) == -1
+        ) {
             return;
         }
 
