@@ -22,7 +22,7 @@ export function getChildrenOfPath(path: string, config: Config) {
  * @param fileName  {string} current filename the look up is done. Absolute path
  * @param text      {string} text in import string. e.g. './src/'
  */
-export function getPath(fileName: string, text: string, rootPath?: string, mappings?: Mapping[]) : string {        
+export function getPath(fileName: string, text: string, rootPath?: string, mappings?: Mapping[]): string {
     const normalizedText = path.normalize(text);
     const textAfterLastSlashRemoved = normalizedText.substring(0, normalizedText.lastIndexOf(path.sep) + 1);
     const isPathAbsolute = normalizedText.startsWith(path.sep);
@@ -38,9 +38,9 @@ export function getPath(fileName: string, text: string, rootPath?: string, mappi
     if (mapping) {
         rootFolder = mapping.value;
         pathEntered = normalizedText.substring(mapping.key.length, normalizedText.length);
-    } 
-    
-    if(isPathAbsolute) {
+    }
+
+    if (isPathAbsolute) {
         rootFolder = rootPath || '';
     }
 
@@ -52,20 +52,22 @@ export function extractExtension(document: TextDocument) {
         return undefined;
     }
 
-    const fragments = document.fileName.split('.');
-    const extension = fragments[fragments.length - 1];
+    return path.parse(document.uri.fsPath).ext.replace('.', '')
 
-    if (!extension || extension.length > 3) {
-        return undefined;
-    }
+    // const fragments = document.fileName.split('.');
+    // const extension = fragments[fragments.length - 1];
 
-    return extension;
+    // if (!extension || extension.length > 3) {
+    //     return undefined;
+    // }
+
+    // return extension;
 }
 
 function readdirPromise(path: string) {
     return new Promise<string[]>((resolve, reject) => {
         readdir(path, (error, files) => {
-            if(error){
+            if (error) {
                 reject(error);
             } else {
                 resolve(files);
@@ -89,9 +91,9 @@ function isFileHidden(filename: string, config: Config) {
  * files.exclude has the following form. key is the glob
  * {
  *    "**//*.js": true
- *    "**//*.js": true "*.git": true
- * }
- */
+*    "**//*.js": true "*.git": true
+* }
+*/
 function isFileHiddenByVsCode(filename: string, config: Config) {
     return config.filesExclude && Object.keys(config.filesExclude)
         .some(key => config.filesExclude[key] && minimatch(filename, key));

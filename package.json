@@ -26,7 +26,7 @@
         "path-intellisense.extensionOnImport": {
           "type": "boolean",
           "default": false,
-          "description": "Adds the file extension to a import statements"
+          "description": "Adds the file extension to import statements"
         },
         "path-intellisense.mappings": {
           "type": "object",
