@@ -1,9 +1,9 @@
 import { CompletionItem, CompletionItemKind } from 'vscode';
-import { getConfig } from '../utils/config';
+import { Config } from '../utils/config';
 
 export class UpCompletionItem extends CompletionItem {
-    constructor() {
-        super(`..${getConfig().autoSlash ? '/' : ''}`);
+    constructor(config: Config) {
+        super(`..${config.autoSlash ? '/' : ''}`);
         this.kind = CompletionItemKind.File;
     }
 }

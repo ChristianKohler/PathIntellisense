@@ -1,4 +1,4 @@
-import { CompletionItemProvider, TextDocument, Position, CompletionItem, workspace, Range } from 'vscode';
+import { CompletionItemProvider, TextDocument, Position, CompletionItem, workspace, Range, Uri } from 'vscode';
 import { isImportExportOrRequire, getTextWithinString, importStringRange } from './utils/text-parser';
 import { getPath, extractExtension, Mapping } from './utils/fs-functions';
 import { PathCompletionItem } from './completionItems/PathCompletionItem';
@@ -16,24 +16,20 @@ interface Request {
 }
 
 export class PathIntellisense implements CompletionItemProvider {
-    
-    private config: Config;
+
     private workspaceConfigs: Object[];
 
     constructor(private getChildrenOfPath: Function) {
-        this.setConfig();
-        workspace.onDidChangeConfiguration(() => this.setConfig());
         getWorkspaceConfigs().then(workspaceConfigs => {
             this.workspaceConfigs = workspaceConfigs;
-            this.setConfig();
         });
     }
-    
+
     provideCompletionItems(document: TextDocument, position: Position): Thenable<CompletionItem[]> {
         const textCurrentLine = document.getText(document.lineAt(position).range);
 
         const request: Request = {
-            config: this.config,
+            config: getConfig(document.uri, this.workspaceConfigs),
             fileName: document.fileName,
             textCurrentLine,
             textWithinString: getTextWithinString(textCurrentLine, position.character),
@@ -41,7 +37,7 @@ export class PathIntellisense implements CompletionItemProvider {
             isImport: isImportExportOrRequire(textCurrentLine),
             documentExtension: extractExtension(document)
         };
-        
+
         return this.shouldProvide(request) ? this.provide(request) : Promise.resolve([]);
     }
 
@@ -62,15 +58,12 @@ export class PathIntellisense implements CompletionItemProvider {
     }
 
     provide(request: Request) {
-        const path = getPath(request.fileName, request.textWithinString, request.config.absolutePathToWorkspace ? workspace.rootPath : null, request.config.mappings);
-        
-        return this.getChildrenOfPath(path, request.config).then(children => ([
-            new UpCompletionItem(),
-            ...children.map(child => new PathCompletionItem(child, request.importRange, request.isImport, request.documentExtension, request.config))
-        ]));
-    }
+        const config = request.config;
+        const path = getPath(request.fileName, request.textWithinString, config.absolutePathToWorkspace ? config.folder && config.folder.uri.fsPath : null, config.mappings);
 
-    setConfig() {
-        this.config = getConfig(this.workspaceConfigs);
+        return this.getChildrenOfPath(path, config).then(children => ([
+            new UpCompletionItem(config),
+            ...children.map(child => new PathCompletionItem(child, request.importRange, request.isImport, request.documentExtension, config))
+        ]));
     }
 }

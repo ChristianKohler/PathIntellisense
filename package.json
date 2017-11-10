@@ -5,7 +5,7 @@
   "version": "1.4.2",
   "publisher": "christian-kohler",
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.18.0"
   },
   "homepage": "https://github.com/ChristianKohler/PathIntellisense",
   "repository": {
@@ -14,6 +14,9 @@
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "multi-root ready"
   ],
   "activationEvents": [
     "*"
@@ -24,26 +27,31 @@
       "title": "path-intellisense",
       "properties": {
         "path-intellisense.extensionOnImport": {
+          "scope": "resource",
           "type": "boolean",
           "default": false,
           "description": "Adds the file extension to a import statements"
         },
         "path-intellisense.mappings": {
+          "scope": "resource",
           "type": "object",
           "default": {},
           "description": "Mappings for paths"
         },
         "path-intellisense.showHiddenFiles": {
+          "scope": "resource",
           "type": "boolean",
           "default": false,
           "description": "Show hidden files"
         },
         "path-intellisense.autoSlashAfterDirectory": {
+          "scope": "resource",
           "type": "boolean",
           "default": false,
           "description": "Automatically adds slash after directory"
         },
         "path-intellisense.absolutePathToWorkspace": {
+          "scope": "resource",
           "type": "boolean",
           "default": true,
           "description": "Sets an absolute path to the current workspace"
