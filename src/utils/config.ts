@@ -1,7 +1,7 @@
 import { workspace, WorkspaceConfiguration } from 'vscode';
 import { Mapping } from "./fs-functions";
 import { readFileSync } from "fs";
-import * as JSON5 from 'json5'
+import * as JSON5 from 'json5';
 
 export interface Config {
     autoSlash: boolean,
