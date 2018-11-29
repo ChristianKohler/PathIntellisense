@@ -1,6 +1,7 @@
 import { workspace, WorkspaceConfiguration } from 'vscode';
 import { Mapping } from "./fs-functions";
 import { readFileSync } from "fs";
+import * as JSON5 from 'json5';
 
 export interface Config {
     autoSlash: boolean,
@@ -31,7 +32,7 @@ export function getConfig(workspaceConfigs: Object[] = []): Config {
 export function getWorkspaceConfigs(): PromiseLike<Object[]> {
     return workspace.findFiles('[tj]sconfig.json', '**/node_modules/**').then(files => {
         if (files && files.length > 0) {
-            return files.map(file => JSON.parse(readFileSync(file.fsPath).toString()));
+            return files.map(file => JSON5.parse(readFileSync(file.fsPath).toString()));
         } else {
             return [];
         }
