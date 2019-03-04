@@ -1,4 +1,4 @@
-import { workspace, WorkspaceConfiguration } from 'vscode';
+import { workspace, WorkspaceConfiguration, window } from 'vscode';
 import { Mapping } from "./fs-functions";
 import { readFileSync } from "fs";
 import * as JSON5 from 'json5';
@@ -56,9 +56,18 @@ function createMappingsFromWorkspaceConfig(tsconfig): Mapping[] {
 }
 
 function getMappings(configuration: WorkspaceConfiguration): Mapping[] {
-        const mappings = configuration['mappings'];
-        return Object.keys(mappings)
-            .map(key => ({ key: key, value: mappings[key]}))
-            .filter(mapping => !!workspace.rootPath || mapping.value.indexOf('${workspaceRoot}') === -1)
-            .map(mapping => ({ key: mapping.key, value: mapping.value.replace('${workspaceRoot}', workspace.rootPath) }));
+    const mappings = configuration['mappings'];
+
+    const rootPath = workspace.rootPath;
+
+    const activeFileUrl = window.activeTextEditor && window.activeTextEditor.document.uri;
+    const activeRootFolder = activeFileUrl && workspace.getWorkspaceFolder && workspace.getWorkspaceFolder(activeFileUrl);
+    const activeRootFolderPath = activeRootFolder && activeRootFolder.uri.path || rootPath;
+
+    return Object.keys(mappings)
+        .map(key => ({ key: key, value: mappings[key]}))
+        .filter(mapping => !!rootPath || mapping.value.indexOf('${workspaceRoot}') === -1)
+        .map(mapping => ({ key: mapping.key, value: mapping.value.replace('${workspaceRoot}', rootPath) }))
+        .map(mapping => ({ key: mapping.key, value: mapping.value.replace('${workspaceFolder}', activeRootFolderPath) }));
+
 }
