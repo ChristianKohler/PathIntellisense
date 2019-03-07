@@ -4,14 +4,18 @@ import { workspace } from 'vscode';
 import { Config } from '../utils/config';
 
 export class PathCompletionItem extends CompletionItem {
+    newText: string;
+
     constructor(fileInfo: FileInfo, importRange: Range, isImport: boolean, documentExtension: string, config: Config) {
         super(fileInfo.file);
         
         this.kind = CompletionItemKind.File;
+        this.newText = fileInfo.file;
         
         this.addGroupByFolderFile(fileInfo);
         this.removeExtension(config.withExtension, fileInfo, isImport, documentExtension, importRange);
         this.addSlashForFolder(fileInfo, importRange, config.autoSlash);
+        this.textEdit = new TextEdit(importRange, this.newText);
     }
     
     addGroupByFolderFile(fileInfo: FileInfo) {
@@ -21,8 +25,7 @@ export class PathCompletionItem extends CompletionItem {
     addSlashForFolder(fileInfo: FileInfo, importRange: Range, autoSlash: boolean) {
         if (!fileInfo.isFile) {
             this.label = `${fileInfo.file}/`;
-            var newText = autoSlash ? `${fileInfo.file}/` : `${fileInfo.file}`;
-            this.textEdit = new TextEdit(importRange, newText);
+            this.newText = autoSlash ? `${fileInfo.file}/` : `${fileInfo.file}`;
         }
     }
     

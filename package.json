@@ -60,8 +60,9 @@
   },
   "devDependencies": {
     "@types/minimatch": "^2.0.29",
-    "typescript": "^2.3.2",
-    "vscode": "^0.11.0"
+    "@types/node": "^11.10.5",
+    "typescript": "^2.9.2",
+    "vscode": "^1.1.30"
   },
   "dependencies": {
     "json5": "^1.0.1",
