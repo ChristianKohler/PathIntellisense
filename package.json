@@ -5,7 +5,7 @@
   "version": "1.4.2",
   "publisher": "christian-kohler",
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.15.1"
   },
   "homepage": "https://github.com/ChristianKohler/PathIntellisense",
   "repository": {
@@ -54,14 +54,15 @@
   "main": "./out/src/extension",
   "icon": "icon/path-intellisense.png",
   "scripts": {
-    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
     "@types/minimatch": "^2.0.29",
+    "@types/node": "^6.0.40",
     "typescript": "^2.3.2",
-    "vscode": "^0.11.0"
+    "vscode": "^1.0.0"
   },
   "dependencies": {
     "json5": "^1.0.1",
