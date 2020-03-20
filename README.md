@@ -5,7 +5,7 @@ Visual Studio Code plugin that autocompletes filenames.
 In the command palette (cmd-shift-p) select Install Extension and choose Path Intellisense.
 
 ## Usage
-![IDE](http://i.giphy.com/iaHeUiDeTUZuo.gif)
+![IDE](https://i.giphy.com/iaHeUiDeTUZuo.gif)
 
 ## Node packages intellisense
 Use [npm intellisense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.npm-intellisense)
@@ -108,4 +108,4 @@ Use ${workspaceRoot} when the path should be relative to the current root of the
 See changelog
 
 ## License
-This software is released under [MIT License](http://www.opensource.org/licenses/mit-license.php)
+This software is released under [MIT License](https://www.opensource.org/licenses/mit-license.php)
