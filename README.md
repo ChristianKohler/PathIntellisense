@@ -4,6 +4,11 @@ Visual Studio Code plugin that autocompletes filenames.
 ## Installation
 In the command palette (cmd-shift-p) select Install Extension and choose Path Intellisense.
 
+To use Path Intellisense instead of the default autocompletion, the following configuration option must be added to your settings:
+```javascript
+{ "typescript.quickSuggestionsForPaths": false }
+```
+
 ## Usage
 ![IDE](https://i.giphy.com/iaHeUiDeTUZuo.gif)
 
