@@ -30,4 +30,22 @@ jobs:
         uses: GabrielBB/xvfb-action@v1.0
         with:
           run: npm test
+          
+  publish:
+    name: Release and publish
+    needs: test
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install dependencies
+        run: npm install
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+        run: npx semantic-release npmPublish=false
 
