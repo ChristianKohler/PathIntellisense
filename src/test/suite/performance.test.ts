@@ -11,7 +11,7 @@ import {
   getConfiguration,
 } from "../../configuration/configuration.service";
 
-suite("Performance Test", () => {
+suite.skip("Performance Test", () => {
   test("config service is faster than direct call", async function () {
     this.timeout(20000);
 
