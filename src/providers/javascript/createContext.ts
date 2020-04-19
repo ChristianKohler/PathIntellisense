@@ -24,7 +24,7 @@ export function createContext(
     isImport,
     document,
     importRange,
-    documentExtension
+    documentExtension,
   };
 }
 
@@ -35,7 +35,7 @@ function getFromString(textFullLine: string, position: number) {
     textToPosition.lastIndexOf("'"),
     textToPosition.lastIndexOf("`")
   );
-  return quoatationPosition != -1
+  return quoatationPosition !== -1
     ? textToPosition.substring(quoatationPosition + 1, textToPosition.length)
     : undefined;
 }
@@ -43,7 +43,7 @@ function getFromString(textFullLine: string, position: number) {
 function isImportExportOrRequire(textFullLine: string) {
   let isImport = textFullLine.substring(0, 6) === "import";
   let isExport = textFullLine.substring(0, 6) === "export";
-  let isRequire = textFullLine.indexOf("require(") != -1;
+  let isRequire = textFullLine.indexOf("require(") !== -1;
   return isImport || isExport || isRequire;
 }
 

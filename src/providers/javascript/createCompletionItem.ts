@@ -61,6 +61,6 @@ function createCompletionItemTextEdit(
 
   let index = fileInfo.file.lastIndexOf(".");
   const newText =
-    index != -1 ? fileInfo.file.substring(0, index) : fileInfo.file;
+    index !== -1 ? fileInfo.file.substring(0, index) : fileInfo.file;
   return new vscode.TextEdit(context.importRange, newText);
 }
