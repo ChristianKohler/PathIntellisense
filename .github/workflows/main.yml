@@ -47,5 +47,5 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
-        run: npx semantic-release npmPublish=false
+        run: npx semantic-release
 
