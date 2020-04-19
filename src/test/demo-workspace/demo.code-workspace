@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "project-one"
+    },
+    {
+      "path": "project-two"
+    },
+    {
+      "path": "project-withwrongconfig"
+    }
+  ],
+  "settings": {
+    "path-intellisense.absolutePathToWorkspace": true,
+    "path-intellisense.extensionOnImport": true,
+    "path-intellisense.mappings": {
+      "lib": "${workspaceRoot}/lib"
+    }
+  }
+}
