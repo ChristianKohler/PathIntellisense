@@ -63,6 +63,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@semantic-release/git": "^9.0.0",
     "@types/benchmark": "^1.0.31",
     "@types/glob": "^7.1.1",
     "@types/mocha": "^7.0.1",
