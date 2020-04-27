@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   test:
@@ -30,7 +30,7 @@ jobs:
         uses: GabrielBB/xvfb-action@v1.0
         with:
           run: npm test
-          
+
   publish:
     name: Release and publish
     needs: test
@@ -44,8 +44,9 @@ jobs:
           node-version: 12
       - name: Install dependencies
         run: npm install
+      - name: Package Extension
+        run: npx vsce package
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         run: npx semantic-release
-
