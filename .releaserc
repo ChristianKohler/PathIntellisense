@@ -8,7 +8,7 @@
         "assets": [
           {
             "path": "*.vsix",
-            "label": "Binary"
+            "label": "PathIntellisense.vsix"
           }
         ]
       }
