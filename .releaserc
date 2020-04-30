@@ -7,16 +7,8 @@
       {
         "assets": [
           {
-            "path": "out/**",
-            "label": "Dist"
-          },
-          {
             "path": "*.vsix",
             "label": "Binary"
-          },
-          {
-            "path": "src/**",
-            "label": "Source"
           }
         ]
       }
