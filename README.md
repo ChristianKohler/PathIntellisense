@@ -1,5 +1,3 @@
-![CI](https://github.com/ChristianKohler/PathIntellisense/workflows/CI/badge.svg)
-
 # Path Intellisense
 
 Visual Studio Code plugin that autocompletes filenames.
