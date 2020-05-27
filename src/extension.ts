@@ -2,23 +2,21 @@
 // Import the module and reference it with the alias vscode in your code below
 import { ExtensionContext, languages } from "vscode";
 import { providers } from "./providers";
-import { subscribeToConfigurationService } from "./configuration/configuration.service";
+import { subscribeToTsConfigChanges } from "./configuration/tsconfig.service";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
   /**
-   * Subscribe to the configuration service
+   * Subscribe to the ts config changes
    */
-  subscribeToConfigurationService().then(configurationServiceSubscription => {
-    context.subscriptions.push(...configurationServiceSubscription);
-  });
+  context.subscriptions.push(...subscribeToTsConfigChanges());
 
   /**
    * Register Providers
    * Add new providers in src/providers/
    * */
-  providers.forEach(provider => {
+  providers.forEach((provider) => {
     const disposable = languages.registerCompletionItemProvider(
       provider.selector,
       provider.provider,

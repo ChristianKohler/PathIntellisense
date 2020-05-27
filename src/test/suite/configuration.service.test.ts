@@ -4,22 +4,20 @@ import { resolve } from "path";
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from "vscode";
-import {
-  subscribeToConfigurationService,
-  getConfiguration
-} from "../../configuration/configuration.service";
+import { getConfiguration } from "../../configuration/configuration.service";
+import { subscribeToTsConfigChanges } from "../../configuration/tsconfig.service";
 
 suite("Configuration Service", () => {
   vscode.window.showInformationMessage("Start all tests.");
 
   test("has different configuration for the workspaceFolders", async () => {
-    await subscribeToConfigurationService();
+    await subscribeToTsConfigChanges();
 
-    await openDocument("demo-workspace/project-one/index.js");
-    const configurationProjectOne = getConfiguration();
+    const document = await openDocument("demo-workspace/project-one/index.js");
+    const configurationProjectOne = await getConfiguration(document.uri);
 
-    await openDocument("demo-workspace/project-two/index.js");
-    const configurationProjectTwo = getConfiguration();
+    const document2 = await openDocument("demo-workspace/project-two/index.js");
+    const configurationProjectTwo = await getConfiguration(document2.uri);
 
     assert.equal(configurationProjectOne?.absolutePathToWorkspace, true);
     assert.equal(configurationProjectOne?.withExtension, true);
@@ -54,14 +52,16 @@ suite("Configuration Service", () => {
 
   test("still can load the config with a wrong ts config", async () => {
     assert.doesNotThrow(async () => {
-      await subscribeToConfigurationService();
+      await subscribeToTsConfigChanges();
     });
   });
 
   test("has default configuration for non project folder files", async () => {
-    await subscribeToConfigurationService();
-    await openDocument("demo-workspace/file-outside-folders.js");
-    const configuration = getConfiguration();
+    await subscribeToTsConfigChanges();
+    const document = await openDocument(
+      "demo-workspace/file-outside-folders.js"
+    );
+    const configuration = await getConfiguration(document.uri);
 
     assert.equal(configuration?.absolutePathToWorkspace, true);
     assert.equal(configuration?.withExtension, true);
@@ -69,11 +69,13 @@ suite("Configuration Service", () => {
   });
 
   test("updates configuration on tsconfig change", async () => {
-    await subscribeToConfigurationService();
+    await subscribeToTsConfigChanges();
 
     // Read existing configuration
-    await openDocument("demo-workspace/project-one/index.js");
-    const configuration = getConfiguration();
+    const documentOne = await openDocument(
+      "demo-workspace/project-one/index.js"
+    );
+    const configuration = await getConfiguration(documentOne.uri);
 
     // change tsconfig file
     const absoluteUrl = getAbsoluteUrl(
@@ -81,21 +83,23 @@ suite("Configuration Service", () => {
     );
     const document = await vscode.workspace.openTextDocument(absoluteUrl);
     await vscode.window.showTextDocument(document);
-    await vscode.window.activeTextEditor?.edit(editbuilder => {
+    await vscode.window.activeTextEditor?.edit((editbuilder) => {
       editbuilder.replace(new vscode.Range(2, 24, 2, 27), "bla");
     });
     await document.save();
 
     // wait for the configuration to be updated..
-    await new Promise(resolve =>
+    await new Promise((resolve) =>
       setTimeout(() => {
         resolve();
       }, 1500)
     );
 
     // Read existing configuration
-    await openDocument("demo-workspace/project-one/index.js");
-    const newConfiguration = getConfiguration();
+    const otherDocument = await openDocument(
+      "demo-workspace/project-one/index.js"
+    );
+    const newConfiguration = await getConfiguration(otherDocument.uri);
 
     assert.equal(
       configuration?.mappings[1].value.endsWith(
@@ -113,7 +117,7 @@ suite("Configuration Service", () => {
 
     // Clean up
     await vscode.window.showTextDocument(document);
-    await vscode.window.activeTextEditor?.edit(editbuilder => {
+    await vscode.window.activeTextEditor?.edit((editbuilder) => {
       editbuilder.replace(new vscode.Range(2, 24, 2, 27), "one");
     });
     await document.save();
@@ -124,6 +128,7 @@ async function openDocument(relativeUri: string) {
   const absoluteUrl = getAbsoluteUrl(relativeUri);
   const document = await vscode.workspace.openTextDocument(absoluteUrl);
   await vscode.window.showTextDocument(document);
+  return document;
 }
 
 function getAbsoluteUrl(relativeUri: string) {

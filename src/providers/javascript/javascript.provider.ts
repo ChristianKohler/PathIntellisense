@@ -21,12 +21,12 @@ export const JavaScriptProvider: PathIntellisenseProvider = {
   triggerCharacters: ["/", '"', "'"],
 };
 
-function provideCompletionItems(
+async function provideCompletionItems(
   document: vscode.TextDocument,
   position: vscode.Position
-): Thenable<vscode.CompletionItem[]> {
+): Promise<vscode.CompletionItem[]> {
   const context = createContext(document, position);
-  const config = getConfiguration();
+  const config = await getConfiguration(document.uri);
 
   return shouldProvide(context, config)
     ? provide(context, config)
@@ -74,7 +74,7 @@ async function provide(
     context.document.uri.fsPath,
     context.fromString,
     rootPath,
-    []
+    config.mappings
   );
 
   const childrenOfPath = await getChildrenOfPath(path, config);
