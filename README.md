@@ -9,7 +9,7 @@ In the command palette (cmd-shift-p) select Install Extension and choose Path In
 To use Path Intellisense instead of the default autocompletion, the following configuration option must be added to your settings:
 
 ```javascript
-{ "typescript.quickSuggestionsForPaths": false }
+{ "typescript.suggest.paths": false }
 ```
 
 ## Usage
