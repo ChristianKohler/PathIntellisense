@@ -1,3 +1,10 @@
+## [2.1.6](https://github.com/ChristianKohler/PathIntellisense/compare/v2.1.5...v2.1.6) (2020-06-05)
+
+
+### Bug Fixes
+
+* **build:** make sure changelog is updated ([c4da5e9](https://github.com/ChristianKohler/PathIntellisense/commit/c4da5e923890bb340d41aaa836bf1bc5f91050d0))
+
 ## Changelog
 
 ### v2.0.0
