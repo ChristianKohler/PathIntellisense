@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.1.6...v2.2.0) (2020-06-05)
+
+
+### Features
+
+* **build:** enable continous deploy ([335a253](https://github.com/ChristianKohler/PathIntellisense/commit/335a25384b5bace59354ef6683e5b76ab54e124c))
+
 ## [2.1.6](https://github.com/ChristianKohler/PathIntellisense/compare/v2.1.5...v2.1.6) (2020-06-05)
 
 ### Bug Fixes
