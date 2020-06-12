@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/ChristianKohler/PathIntellisense/compare/v2.2.0...v2.2.1) (2020-06-12)
+
+
+### Bug Fixes
+
+* **bundle:** whitelist dependencies ([16c85ae](https://github.com/ChristianKohler/PathIntellisense/commit/16c85ae20bd953462c89bb844d8b876cdbd3114f))
+
 # [2.2.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.1.6...v2.2.0) (2020-06-05)
 
 
