@@ -42,7 +42,7 @@ function createMappingsFromWorkspaceConfig(tsconfig: {
     mappings.push({
       key: baseUrl,
       // value: `${workfolder.uri.path}/${baseUrl}`
-      value: "${workspaceRoot}/" + baseUrl,
+      value: "${workspaceFolder}/" + baseUrl,
     });
   }
 

@@ -122,14 +122,14 @@ Define custom mappings which can be useful for using absolute paths or in combin
 ```javascript
 {
 	"path-intellisense.mappings": {
-		"/": "${workspaceRoot}",
-		"lib": "${workspaceRoot}/lib",
+		"/": "${workspaceFolder}",
+		"lib": "${workspaceFolder}/lib",
 		"global": "/Users/dummy/globalLibs"
 	},
 }
 ```
 
-Use \${workspaceRoot} when the path should be relative to the current root of the current project.
+Use \${workspaceFolder} when the path should be relative to the current root of the current project. V2.2.1 and lower used \${workspaceRoot}. Newer version support both placeholders.
 
 ## History
 

@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { Config, Mapping } from "./configuration.interface";
 import { getWorkfolderTsConfigConfiguration } from "./tsconfig.service";
-import { parseMappings, replaceWorkspaceRoot } from "./mapping.service";
+import { parseMappings, replaceWorkspaceFolder } from "./mapping.service";
 
 export async function getConfiguration(
   resource: vscode.Uri
@@ -32,5 +32,5 @@ async function getMappings(
   const mappings = parseMappings(configuration["mappings"]);
   const tsConfigMappings = await getWorkfolderTsConfigConfiguration(workfolder);
   const allMappings = [...mappings, ...tsConfigMappings];
-  return replaceWorkspaceRoot(allMappings, workfolder);
+  return replaceWorkspaceFolder(allMappings, workfolder);
 }

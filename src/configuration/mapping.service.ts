@@ -15,20 +15,40 @@ export function parseMappings(mappings: { [key: string]: string }): Mapping[] {
  * @param mappings
  * @param workfolder
  */
-export function replaceWorkspaceRoot(
+export function replaceWorkspaceFolder(
   mappings: Mapping[],
   workfolder?: vscode.WorkspaceFolder
 ): Mapping[] {
   const rootPath = workfolder?.uri.path;
 
   if (rootPath) {
+    /** Replace placeholder with workspace folder */
     return mappings.map(({ key, value }) => ({
       key,
-      value: value.replace("${workspaceRoot}", rootPath),
+      value: replaceWorkspaceFolder(value, rootPath),
     }));
   } else {
-    return mappings.filter(
-      ({ value }) => value.indexOf("${workspaceRoot}") === -1
-    );
+    /** Filter items out which contain a workspace root */
+    return mappings.filter(({ value }) => !valueContainsWorkspaceFolder(value));
   }
+}
+
+/**
+ * Replaces both placeholders with the rootpath
+ * - ${workspaceRoot}    // old way and only legacy support
+ * - ${workspaceFolder}  // new way
+ * @param value
+ * @param rootPath
+ */
+function replaceWorkspaceFolder(value: string, rootPath: string) {
+  return value
+    .replace("${workspaceRoot}", rootPath)
+    .replace("${workspaceFolder}", rootPath);
+}
+
+function valueContainsWorkspaceFolder(value: string): boolean {
+  return (
+    value.indexOf("${workspaceRoot}") >= 0 ||
+    value.indexOf("${workspaceFolder}") >= 0
+  );
 }
