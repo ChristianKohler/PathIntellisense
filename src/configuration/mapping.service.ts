@@ -25,7 +25,7 @@ export function replaceWorkspaceFolder(
     /** Replace placeholder with workspace folder */
     return mappings.map(({ key, value }) => ({
       key,
-      value: replaceWorkspaceFolder(value, rootPath),
+      value: replaceWorkspaceFolderWithRootPath(value, rootPath),
     }));
   } else {
     /** Filter items out which contain a workspace root */
@@ -40,7 +40,7 @@ export function replaceWorkspaceFolder(
  * @param value
  * @param rootPath
  */
-function replaceWorkspaceFolder(value: string, rootPath: string) {
+function replaceWorkspaceFolderWithRootPath(value: string, rootPath: string) {
   return value
     .replace("${workspaceRoot}", rootPath)
     .replace("${workspaceFolder}", rootPath);
