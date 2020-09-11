@@ -1,3 +1,15 @@
+# [2.3.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.2.1...v2.3.0) (2020-09-11)
+
+
+### Bug Fixes
+
+* duplicate function name ([b5f5238](https://github.com/ChristianKohler/PathIntellisense/commit/b5f523851aefed7ae92ff49bc914e261eb3aea77))
+
+
+### Features
+
+* **mapping:** add support for workspaceFolder placeholders ([b07960e](https://github.com/ChristianKohler/PathIntellisense/commit/b07960e38d70b94218fda76c2b54689593e1e905))
+
 ## [2.2.1](https://github.com/ChristianKohler/PathIntellisense/compare/v2.2.0...v2.2.1) (2020-06-12)
 
 
