@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.3.0...v2.4.0) (2021-07-19)
+
+
+### Features
+
+* add untrustedWorkspaces support ([cb71dc8](https://github.com/ChristianKohler/PathIntellisense/commit/cb71dc8aa5a2dd009ce4a2c0d8289f5c53c3656c))
+
 # [2.3.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.2.1...v2.3.0) (2020-09-11)
 
 
