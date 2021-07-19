@@ -7,6 +7,11 @@ Visual Studio Code plugin that autocompletes filenames.
 <p><a title="Try CodeStream" href="https://sponsorlink.codestream.com/?utm_source=vscmarket&amp;utm_campaign=pathintel&amp;utm_medium=banner"><img src="https://alt-images.codestream.com/codestream_logo_pathintel.png"></a></br>
 Eliminate context switching and costly distractions. Create and merge PRs and perform code reviews from inside your IDE while using jump-to-definition, your favorite keybindings, and other IDE tools.<br> <a title="Try CodeStream" href="https://sponsorlink.codestream.com/?utm_source=vscmarket&amp;utm_campaign=pathintel&amp;utm_medium=banner">Learn more</a></p>
 
+<p>
+<a title="Try stepsize" href="https://bit.ly/36ccDka"><img src="./docs/images/sponsors/stepsize.png"></a></br>
+Track and prioritise tech debt and maintenance issues, straight from your IDE. Bookmark code while you work, organise TODOs and share codebase knowledge with your team. <a title="Try stepsize" href="https://bit.ly/36ccDka">Try it out for free today.</a>
+</p>
+
 ## Installation
 
 In the command palette (cmd-shift-p) select Install Extension and choose Path Intellisense.
