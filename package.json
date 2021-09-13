@@ -69,7 +69,7 @@
     "test": "node ./out/test/runTest.js",
     "package": "vsce package",
     "deploy": "vsce publish",
-    "prepack": "npm run package",
+    "prepack": "npm run package && npm run package-web",
     "compile-web": "webpack --config ./build/web-extension.webpack.config.js",
     "watch-web": "webpack --watch --config ./build/web-extension.webpack.config.js",
     "package-web": "webpack --mode production --devtool hidden-source-map --config ./build/web-extension.webpack.config.js"
