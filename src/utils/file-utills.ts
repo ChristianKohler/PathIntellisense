@@ -4,19 +4,9 @@ import { Mapping, Config } from "../configuration/configuration.interface";
 import * as minimatch from "minimatch";
 import { join } from "path";
 
-export class FileInfo {
+export interface FileInfo {
   file: string;
-  isFile: boolean = false;
-
-  constructor(path: string, file: string) {
-    this.file = file;
-    this.setIsFile(path, file);
-  }
-
-  async setIsFile(path: string, file: string) {
-    let fileStat =  await vscode.workspace.fs.stat(vscode.Uri.file(join(path, file)));
-    this.isFile  = fileStat.type === 1;
-  }
+  isFile: boolean;
 }
 
 /**
@@ -60,18 +50,34 @@ export function getPathOfFolderToLookupFiles(
 
 export async function getChildrenOfPath(path: string, config: Config) {
   try {
-    const files: string[] = await (await vscode.workspace.fs.readDirectory(vscode.Uri.parse(path))).map(file => {
-      return file[0];
-    });
-    return files
-      .filter(filename => filterFile(filename, config))
-      .map(f => new FileInfo(path, f));
+    const filesTubles = await vscode.workspace.fs.readDirectory(
+      vscode.Uri.parse(path)
+    );
+
+    const files = filesTubles
+      .map((fileTuble) => fileTuble[0])
+      .filter((filename) => filterHiddenFiles(filename, config));
+
+    const fileInfoList: FileInfo[] = [];
+
+    for (const file of files) {
+      const fileStat = await vscode.workspace.fs.stat(
+        vscode.Uri.file(join(path, file))
+      );
+      const isFile = fileStat.type === 1;
+      fileInfoList.push({
+        file,
+        isFile,
+      });
+    }
+
+    return fileInfoList;
   } catch (error) {
     return [];
   }
 }
 
-function filterFile(filename: string, config: Config) {
+function filterHiddenFiles(filename: string, config: Config) {
   if (config.showHiddenFiles) {
     return true;
   }
@@ -91,7 +97,7 @@ function isFileHiddenByVsCode(filename: string, config: Config) {
   return (
     config.filesExclude &&
     Object.keys(config.filesExclude).some(
-      key => config.filesExclude[key] && minimatch(filename, key)
+      (key) => config.filesExclude[key] && minimatch(filename, key)
     )
   );
 }
