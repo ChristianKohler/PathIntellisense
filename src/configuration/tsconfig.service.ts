@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import * as JSON5 from "json5";
-import { readFileSync } from "fs";
 import { Mapping } from "./configuration.interface";
 
 export const getWorkfolderTsConfigConfiguration = memoize(async function (
@@ -12,15 +11,15 @@ export const getWorkfolderTsConfigConfiguration = memoize(async function (
 
   let mappings: Mapping[] = [];
 
-  files.forEach(async (file) => {
+  for (const file of files) {
     try {
-      const fileContents = await vscode.workspace.fs.readFile(vscode.Uri.file(file.fsPath));
+      const fileUri = vscode.Uri.file(file.fsPath);
+      const fileContents = await vscode.workspace.fs.readFile(fileUri);
       const parsedFile = JSON5.parse(fileContents.toString());
       const newMappings = createMappingsFromWorkspaceConfig(parsedFile);
-      mappings = [...mappings, ...newMappings];
-    } catch {
-    }
-  });
+      mappings.push(...newMappings);
+    } catch {}
+  }
 
   return mappings;
 });
