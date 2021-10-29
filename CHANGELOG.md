@@ -1,3 +1,11 @@
+## [2.4.1](https://github.com/ChristianKohler/PathIntellisense/compare/v2.4.0...v2.4.1) (2021-10-29)
+
+
+### Bug Fixes
+
+* loop not awaiting result ([7cb5b70](https://github.com/ChristianKohler/PathIntellisense/commit/7cb5b70732483378648299eac2f556a223a0a04a))
+* make sure that fileinfo has isFile set when called ([115e7f4](https://github.com/ChristianKohler/PathIntellisense/commit/115e7f4e835c6f3b34175ab83e12e2601396e5ea))
+
 # [2.4.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.3.0...v2.4.0) (2021-07-19)
 
 
