@@ -3,3 +3,4 @@ node_modulesout
 node_modules
 .vscode-test/
 *.vsix
+dist
