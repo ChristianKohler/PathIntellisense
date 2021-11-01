@@ -28,7 +28,7 @@ suite("Filetype Json", () => {
 
     assert.strictEqual(
       text,
-      `{ "image": "./myfolder/mysubfolder/fileInSubfolder.js" }\n`
+      `{ "image": "./myfolder/mysubfolder/fileInSubfolder.js" }`
     );
   });
 });
