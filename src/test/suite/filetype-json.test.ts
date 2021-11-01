@@ -35,14 +35,14 @@ suite("Filetype Json", () => {
 
 async function triggerAndUseFirstSuggestion() {
   await vscode.commands.executeCommand("editor.action.triggerSuggest");
-  await delay(800);
+  await delay(500);
   await vscode.commands.executeCommand("acceptSelectedSuggestion");
-  await delay(800);
+  await delay(500);
 }
 
 async function addSlash(editor: vscode.TextEditor) {
   await editor.edit((edit) => {
     edit.insert(editor.selection.active, "/");
   });
-  await delay(800);
+  await delay(500);
 }
