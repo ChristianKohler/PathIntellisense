@@ -7,6 +7,7 @@ import { join } from "path";
 export interface FileInfo {
   file: string;
   isFile: boolean;
+  documentExtension?: string;
 }
 
 /**
@@ -64,10 +65,10 @@ export async function getChildrenOfPath(path: string, config: Config) {
       const fileStat = await vscode.workspace.fs.stat(
         vscode.Uri.file(join(path, file))
       );
-      const isFile = fileStat.type === 1;
       fileInfoList.push({
         file,
-        isFile,
+        isFile: fileStat.type === vscode.FileType.File,
+        documentExtension: getDocumentExtension(file, fileStat),
       });
     }
 
@@ -75,6 +76,15 @@ export async function getChildrenOfPath(path: string, config: Config) {
   } catch (error) {
     return [];
   }
+}
+
+function getDocumentExtension(file: string, fileStat: vscode.FileStat) {
+  if (fileStat.type !== vscode.FileType.File) {
+    return undefined;
+  }
+
+  const fragments = file.split(".");
+  return fragments[fragments.length - 1];
 }
 
 function filterHiddenFiles(filename: string, config: Config) {

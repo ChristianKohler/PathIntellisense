@@ -89,7 +89,7 @@ suite("Configuration Service", () => {
     await document.save();
 
     // wait for the configuration to be updated..
-    await new Promise((resolve) =>
+    await new Promise<void>((resolve) =>
       setTimeout(() => {
         resolve();
       }, 1500)

@@ -23,8 +23,9 @@ function createFolderItem(
   return {
     label: fileInfo.file,
     kind: vscode.CompletionItemKind.Folder,
-    textEdit: new vscode.TextEdit(importRange, newText),
     sortText: `a_${fileInfo.file}`,
+    range: importRange,
+    insertText: newText,
   };
 }
 
@@ -33,34 +34,33 @@ function createFileItem(
   config: Config,
   context: Context
 ): vscode.CompletionItem {
-  const textEdit = createCompletionItemTextEdit(fileInfo, config, context);
+  const insertText = createCompletionItemInsertText(fileInfo, config, context);
 
   return {
     label: fileInfo.file,
     kind: vscode.CompletionItemKind.File,
     sortText: `b_${fileInfo.file}`,
-    textEdit,
+    range: context.importRange,
+    insertText: insertText,
   };
 }
 
-function createCompletionItemTextEdit(
+function createCompletionItemInsertText(
   fileInfo: FileInfo,
   config: Config,
   context: Context
 ) {
-  if (config.withExtension || !context.isImport) {
-    return undefined;
-  }
+  const shouldExcludeDocumentExtension =
+    context.isImport &&
+    !config.withExtension &&
+    fileInfo.documentExtension === context.documentExtension;
 
-  const fragments = fileInfo.file.split(".");
-  const extension = fragments[fragments.length - 1];
+  return shouldExcludeDocumentExtension
+    ? getFileNameWithoutExtension(fileInfo.file)
+    : fileInfo.file;
+}
 
-  if (extension !== context.documentExtension) {
-    return undefined;
-  }
-
-  let index = fileInfo.file.lastIndexOf(".");
-  const newText =
-    index !== -1 ? fileInfo.file.substring(0, index) : fileInfo.file;
-  return new vscode.TextEdit(context.importRange, newText);
+function getFileNameWithoutExtension(fileName: string) {
+  let index = fileName.lastIndexOf(".");
+  return index !== -1 ? fileName.substring(0, index) : fileName;
 }
