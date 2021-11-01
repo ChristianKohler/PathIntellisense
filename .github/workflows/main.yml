@@ -7,8 +7,6 @@ name: CI
 on:
   push:
     branches: [master]
-  pull_request:
-    branches: [master]
 
 jobs:
   test:
@@ -33,6 +31,7 @@ jobs:
 
   publish:
     name: Release and publish
+    if: github.event_name != 'pull_request'
     needs: test
     runs-on: ubuntu-18.04
     steps:
