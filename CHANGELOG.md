@@ -1,3 +1,12 @@
+## [2.4.2](https://github.com/ChristianKohler/PathIntellisense/compare/v2.4.1...v2.4.2) (2021-11-04)
+
+
+### Bug Fixes
+
+* **windows:** path parse issue ([285ab92](https://github.com/ChristianKohler/PathIntellisense/commit/285ab92f9ffd45fca3df0d037fdc028f108aa560))
+* json test newline error ([465d22d](https://github.com/ChristianKohler/PathIntellisense/commit/465d22d2c99ded93f5a6c15ad7d5454bc9b5b615))
+* replace deprecated textedit with inserttext ([9df6e6a](https://github.com/ChristianKohler/PathIntellisense/commit/9df6e6ae5250b11052a5007c0de648e0f09c54d8))
+
 ## [2.4.1](https://github.com/ChristianKohler/PathIntellisense/compare/v2.4.0...v2.4.1) (2021-10-29)
 
 
