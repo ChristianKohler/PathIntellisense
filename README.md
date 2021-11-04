@@ -20,6 +20,7 @@ To use Path Intellisense instead of the default autocompletion, the following co
 
 ```javascript
 { "typescript.suggest.paths": false }
+{ "javascript.suggest.paths": false }
 ```
 
 ## Usage
