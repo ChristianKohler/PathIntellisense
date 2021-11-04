@@ -34,6 +34,7 @@ suite("Filetype Json", () => {
 });
 
 async function triggerAndUseFirstSuggestion() {
+  await delay(500);
   await vscode.commands.executeCommand("editor.action.triggerSuggest");
   await delay(500);
   await vscode.commands.executeCommand("acceptSelectedSuggestion");
