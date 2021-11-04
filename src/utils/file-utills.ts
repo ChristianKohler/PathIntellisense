@@ -52,7 +52,7 @@ export function getPathOfFolderToLookupFiles(
 export async function getChildrenOfPath(path: string, config: Config) {
   try {
     const filesTubles = await vscode.workspace.fs.readDirectory(
-      vscode.Uri.parse(path)
+      vscode.Uri.file(path)
     );
 
     const files = filesTubles
