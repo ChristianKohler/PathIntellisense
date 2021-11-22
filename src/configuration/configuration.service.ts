@@ -30,7 +30,8 @@ async function getMappings(
   workfolder?: vscode.WorkspaceFolder
 ): Promise<Mapping[]> {
   const mappings = parseMappings(configuration["mappings"]);
-  const tsConfigMappings = await getWorkfolderTsConfigConfiguration(workfolder);
+  const ignoreTsConfigBaseUrl = configuration["ignoreTsConfigBaseUrl"];
+  const tsConfigMappings = await (ignoreTsConfigBaseUrl ? [] : getWorkfolderTsConfigConfiguration(workfolder));
   const allMappings = [...mappings, ...tsConfigMappings];
   return replaceWorkspaceFolder(allMappings, workfolder);
 }

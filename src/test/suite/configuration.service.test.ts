@@ -19,18 +19,19 @@ async function setConfig(key: string, value: any) {
 }
 
 suite("Configuration Service", () => {
-
   beforeEach(async () => {
     await setConfig("absolutePathToWorkspace", undefined);
     await setConfig("extensionOnImport", undefined);
     await setConfig("mappings", undefined);
-  })
-
+    await setConfig("ignoreTsConfigBaseUrl", undefined);
+  });
+  
   afterEach(async () => {
     await setConfig("absolutePathToWorkspace", undefined);
     await setConfig("extensionOnImport", undefined);
     await setConfig("mappings", undefined);
-  })
+    await setConfig("ignoreTsConfigBaseUrl", undefined);
+  });
 
   test("has different configuration for the workspaceFolders", async () => {
     await subscribeToTsConfigChanges();
@@ -101,6 +102,22 @@ suite("Configuration Service", () => {
     assert.equal(configuration?.absolutePathToWorkspace, true);
     assert.equal(configuration?.withExtension, true);
     assert.equal(configuration?.mappings.length, 0);
+  });
+
+  test("does not use tsconfig is diabled", async () => {
+    await subscribeToTsConfigChanges();
+
+    const documentOne = await openDocument(
+      "demo-workspace/project-one/index.js"
+    );
+    const configuration = await getConfiguration(documentOne.uri);
+
+    await setConfig("ignoreTsConfigBaseUrl", true);
+
+    const configurationNew = await getConfiguration(documentOne.uri);
+
+    assert.equal(configuration?.mappings.length, 1);
+    assert.equal(configurationNew?.mappings.length, 0);
   });
 
   test("updates configuration on tsconfig change", async () => {

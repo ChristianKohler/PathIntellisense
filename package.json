@@ -53,6 +53,11 @@
           "type": "boolean",
           "default": true,
           "description": "Sets an absolute path to the current workspace"
+        },
+        "path-intellisense.ignoreTsConfigBaseUrl": {
+          "type": "boolean",
+          "default": false,
+          "description": "Ignores tsconfig file for mappings"
         }
       }
     }

@@ -68,6 +68,14 @@ would allow to type:
 }
 ```
 
+You can disable this behaviour by setting it to false:
+
+```javascript
+{
+	"path-intellisense.ignoreTsConfigBaseUrl": false,
+}
+```
+
 ## Settings
 
 ### File extension in import statements
