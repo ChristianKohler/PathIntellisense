@@ -11,12 +11,7 @@
     }
   ],
   "settings": {
-    "path-intellisense.absolutePathToWorkspace": true,
-    "path-intellisense.extensionOnImport": true,
-    "path-intellisense.mappings": {
-      "lib": "${workspaceFolder}/lib"
-    },
     "typescript.suggest.paths": false,
-    "javascript.suggest.paths": false
+    "javascript.suggest.paths": false,
   }
 }

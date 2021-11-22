@@ -1,4 +1,5 @@
 import * as assert from "assert";
+import { beforeEach, afterEach } from "mocha";
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
@@ -8,9 +9,37 @@ import { subscribeToTsConfigChanges } from "../../configuration/tsconfig.service
 import { delay } from "../utils/delay";
 import { getAbsoluteUrl, openDocument } from "../utils/open-document";
 
+async function setConfig(key: string, value: any) {
+  const cfg = vscode.workspace.getConfiguration();
+  await cfg.update(
+    `path-intellisense.${key}`,
+    value,
+    vscode.ConfigurationTarget.Workspace
+  );
+}
+
 suite("Configuration Service", () => {
+
+  beforeEach(async () => {
+    await setConfig("absolutePathToWorkspace", undefined);
+    await setConfig("extensionOnImport", undefined);
+    await setConfig("mappings", undefined);
+  })
+
+  afterEach(async () => {
+    await setConfig("absolutePathToWorkspace", undefined);
+    await setConfig("extensionOnImport", undefined);
+    await setConfig("mappings", undefined);
+  })
+
   test("has different configuration for the workspaceFolders", async () => {
     await subscribeToTsConfigChanges();
+
+    await setConfig("absolutePathToWorkspace", true);
+    await setConfig("extensionOnImport", true);
+    await setConfig("mappings", {
+      lib: "${workspaceFolder}/lib",
+    });
 
     const document = await openDocument("demo-workspace/project-one/index.js");
     const configurationProjectOne = await getConfiguration(document.uri);
@@ -57,6 +86,13 @@ suite("Configuration Service", () => {
 
   test("has default configuration for non project folder files", async () => {
     await subscribeToTsConfigChanges();
+
+    await setConfig("absolutePathToWorkspace", true);
+    await setConfig("extensionOnImport", true);
+    await setConfig("mappings", {
+      lib: "${workspaceFolder}/lib",
+    });
+
     const document = await openDocument(
       "demo-workspace/file-outside-folders.js"
     );
@@ -69,6 +105,12 @@ suite("Configuration Service", () => {
 
   test("updates configuration on tsconfig change", async () => {
     await subscribeToTsConfigChanges();
+
+    await setConfig("absolutePathToWorkspace", true);
+    await setConfig("extensionOnImport", true);
+    await setConfig("mappings", {
+      lib: "${workspaceFolder}/lib",
+    });
 
     // Read existing configuration
     const documentOne = await openDocument(
