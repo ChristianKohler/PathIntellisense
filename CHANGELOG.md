@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.4.2...v2.5.0) (2021-11-22)
+
+
+### Features
+
+* **ignoreTsConfigBaseUrl:** implemented ([fb323d9](https://github.com/ChristianKohler/PathIntellisense/commit/fb323d94e26d6bb988ef86c5a36082e4fe13fc40)), closes [#161](https://github.com/ChristianKohler/PathIntellisense/issues/161)
+
 ## [2.4.2](https://github.com/ChristianKohler/PathIntellisense/compare/v2.4.1...v2.4.2) (2021-11-04)
 
 
