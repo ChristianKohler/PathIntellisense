@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.5.0...v2.6.0) (2021-11-29)
+
+
+### Features
+
+* enable virtual workspaces ([86a0426](https://github.com/ChristianKohler/PathIntellisense/commit/86a0426e01baffa29914bfd10daab9ce0c4bd7c5))
+
 # [2.5.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.4.2...v2.5.0) (2021-11-22)
 
 
