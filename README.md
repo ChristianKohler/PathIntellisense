@@ -68,11 +68,11 @@ would allow to type:
 }
 ```
 
-You can disable this behaviour by setting it to false:
+You can disable this behaviour by setting it to true:
 
 ```javascript
 {
-	"path-intellisense.ignoreTsConfigBaseUrl": false,
+	"path-intellisense.ignoreTsConfigBaseUrl": true,
 }
 ```
 
