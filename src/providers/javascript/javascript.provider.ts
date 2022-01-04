@@ -50,11 +50,16 @@ function shouldProvide(context: Context, config: Config): boolean {
   }
 
   const startsWithDot = fromString[0] === ".";
+  const startsWithSlash = fromString[0] === "/";
   const startsWithMapping = config.mappings.some(({ key }) =>
     fromString.startsWith(key)
   );
 
-  return isImport && (startsWithDot || startsWithMapping);
+  return isImport && (
+    startsWithDot
+    || startsWithMapping
+    || (startsWithSlash && config.showOnAbsoluteSlash)
+  );
 }
 
 /**
@@ -66,9 +71,10 @@ async function provide(
 ): Promise<vscode.CompletionItem[]> {
   const workspace = vscode.workspace.getWorkspaceFolder(context.document.uri);
 
-  const rootPath = config.absolutePathToWorkspace
+
+  const rootPath = config.absolutePathTo||(config.absolutePathToWorkspace
     ? workspace?.uri.fsPath
-    : undefined;
+    : undefined);
 
   const path = getPathOfFolderToLookupFiles(
     context.document.uri.fsPath,

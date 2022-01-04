@@ -4,6 +4,8 @@ export interface Config {
   showHiddenFiles: boolean;
   withExtension: boolean;
   absolutePathToWorkspace: boolean;
+  absolutePathTo: string|null;
+  showOnAbsoluteSlash: boolean,
   filesExclude: { [key: string]: string };
 }
 

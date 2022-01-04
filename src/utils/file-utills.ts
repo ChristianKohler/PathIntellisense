@@ -20,30 +20,33 @@ export function getPathOfFolderToLookupFiles(
   rootPath?: string,
   mappings?: Mapping[]
 ): string {
+  // Note: since we're normalizing the text here, we have to normalize everything we want
+  //  to compare it against as path.normalize() turns forward slashes into backslashes on
+  //  Windows.
   const normalizedText = path.normalize(text || "");
-
   const isPathAbsolute = normalizedText.startsWith(path.sep);
-
-  let rootFolder = path.dirname(fileName);
-  let pathEntered = normalizedText;
 
   // Search a mapping for the current text. First mapping is used where text starts with mapping
   const mapping =
     mappings &&
     mappings.reduce((prev: any, curr: any) => {
-      return prev || (normalizedText.startsWith(curr.key) && curr);
+      return prev || (normalizedText.startsWith(path.normalize(curr.key)) && curr);
     }, undefined);
 
+  let rootFolder, pathEntered;
   if (mapping) {
+    // The values of mapped (key,value)-pairs are all considered to be absolute paths, so
+    //  this rootFolder value (taken from the mapping's value) is left unchanged.
     rootFolder = mapping.value;
-    pathEntered = normalizedText.substring(
-      mapping.key.length,
+    pathEntered = normalizedText.slice(
+      path.normalize(mapping.key).length,
       normalizedText.length
     );
-  }
-
-  if (isPathAbsolute) {
-    rootFolder = rootPath || "";
+  } else {
+    // We only care about whether the path specified was absolute if it's unmapped (e.g.
+    //  we allow user-specified maps to "override" (skip) this root folder determination.)
+    rootFolder = isPathAbsolute ? (rootPath || "") : path.dirname(fileName);
+    pathEntered = normalizedText;
   }
 
   return path.join(rootFolder, pathEntered);
@@ -110,4 +113,17 @@ function isFileHiddenByVsCode(filename: string, config: Config) {
       (key) => config.filesExclude[key] && minimatch(filename, key)
     )
   );
+}
+
+/**
+ * Replaces both placeholders with the rootpath
+ * - ${workspaceRoot}    // old way and only legacy support
+ * - ${workspaceFolder}  // new way
+ * @param value
+ * @param rootPath
+ */
+export function replaceWorkspaceFolderWithRootPath(value: string, rootPath: string) {
+  return value
+    .replace("${workspaceRoot}", rootPath)
+    .replace("${workspaceFolder}", rootPath);
 }
