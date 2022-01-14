@@ -40,7 +40,7 @@
         "path-intellisense.mappings": {
           "type": "object",
           "default": {},
-          "description": "Mappings for paths"
+          "description": "Mappings for paths.  The values should be interpreted as absolute paths (and can use '${workspaceFolder}')"
         },
         "path-intellisense.showHiddenFiles": {
           "type": "boolean",
@@ -56,6 +56,15 @@
           "type": "boolean",
           "default": true,
           "description": "Sets an absolute path to the current workspace"
+        },
+        "path-intellisense.absolutePathTo": {
+          "type": "string",
+          "description": "If defined, unmapped absolute path imports are based on this location.  Takes priority over 'absolutePathToWorkspace' if both are defined"
+        },
+        "path-intellisense.showOnAbsoluteSlash": {
+          "type": "boolean",
+          "default": true,
+          "description": "Shows suggestions when the import starts with a forward slash ('/')"
         },
         "path-intellisense.ignoreTsConfigBaseUrl": {
           "type": "boolean",

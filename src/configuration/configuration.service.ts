@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { Config, Mapping } from "./configuration.interface";
 import { getWorkfolderTsConfigConfiguration } from "./tsconfig.service";
 import { parseMappings, replaceWorkspaceFolder } from "./mapping.service";
+import { replaceWorkspaceFolderWithRootPath } from "../utils/file-utills";
 
 export async function getConfiguration(
   resource: vscode.Uri
@@ -20,6 +21,8 @@ export async function getConfiguration(
     showHiddenFiles: cfgExtension["showHiddenFiles"],
     withExtension: cfgExtension["extensionOnImport"],
     absolutePathToWorkspace: cfgExtension["absolutePathToWorkspace"],
+    absolutePathTo: resolveAbsolutePathTo(cfgExtension["absolutePathTo"], workspaceFolder),
+    showOnAbsoluteSlash: cfgExtension["showOnAbsoluteSlash"],
     filesExclude: cfgGeneral["exclude"],
     mappings,
   };
@@ -34,4 +37,16 @@ async function getMappings(
   const tsConfigMappings = await (ignoreTsConfigBaseUrl ? [] : getWorkfolderTsConfigConfiguration(workfolder));
   const allMappings = [...mappings, ...tsConfigMappings];
   return replaceWorkspaceFolder(allMappings, workfolder);
+}
+
+
+function resolveAbsolutePathTo(
+  cfgPath?: string,
+  workfolder?: vscode.WorkspaceFolder,
+): string|null {
+  const rootPath = workfolder?.uri.path;
+
+  return (rootPath && cfgPath)
+    ? replaceWorkspaceFolderWithRootPath(cfgPath, rootPath)
+    : null;
 }

@@ -8,7 +8,10 @@
     },
     {
       "path": "project-withwrongconfig"
-    }
+    },
+    {
+      "path": "project-three-absolute-changes"
+    },
   ],
   "settings": {
     "typescript.suggest.paths": false,

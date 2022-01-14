@@ -1,5 +1,6 @@
 import { Mapping } from "./configuration.interface";
 import * as vscode from "vscode";
+import { replaceWorkspaceFolderWithRootPath } from "../utils/file-utills";
 
 /**
  * From { "lib": "libraries", "other": "otherpath" }
@@ -31,19 +32,6 @@ export function replaceWorkspaceFolder(
     /** Filter items out which contain a workspace root */
     return mappings.filter(({ value }) => !valueContainsWorkspaceFolder(value));
   }
-}
-
-/**
- * Replaces both placeholders with the rootpath
- * - ${workspaceRoot}    // old way and only legacy support
- * - ${workspaceFolder}  // new way
- * @param value
- * @param rootPath
- */
-function replaceWorkspaceFolderWithRootPath(value: string, rootPath: string) {
-  return value
-    .replace("${workspaceRoot}", rootPath)
-    .replace("${workspaceFolder}", rootPath);
 }
 
 function valueContainsWorkspaceFolder(value: string): boolean {
