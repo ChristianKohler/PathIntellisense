@@ -1,3 +1,10 @@
+## [2.6.1](https://github.com/ChristianKohler/PathIntellisense/compare/v2.6.0...v2.6.1) (2022-01-14)
+
+
+### Bug Fixes
+
+* Improve absolute path handling (mostly-Windows fixes, some QOL) ([#193](https://github.com/ChristianKohler/PathIntellisense/issues/193)) ([c9d7471](https://github.com/ChristianKohler/PathIntellisense/commit/c9d7471fb2802abb0c41691ed44b10fe5cdaeb8c)), closes [#48](https://github.com/ChristianKohler/PathIntellisense/issues/48) [#157](https://github.com/ChristianKohler/PathIntellisense/issues/157) [#51](https://github.com/ChristianKohler/PathIntellisense/issues/51)
+
 # [2.6.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.5.0...v2.6.0) (2021-11-29)
 
 
