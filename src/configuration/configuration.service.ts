@@ -18,10 +18,14 @@ export async function getConfiguration(
 
   return {
     autoSlash: cfgExtension["autoSlashAfterDirectory"],
+    autoTrigger: cfgExtension["autoTriggerNextSuggestion"],
     showHiddenFiles: cfgExtension["showHiddenFiles"],
     withExtension: cfgExtension["extensionOnImport"],
     absolutePathToWorkspace: cfgExtension["absolutePathToWorkspace"],
-    absolutePathTo: resolveAbsolutePathTo(cfgExtension["absolutePathTo"], workspaceFolder),
+    absolutePathTo: resolveAbsolutePathTo(
+      cfgExtension["absolutePathTo"],
+      workspaceFolder
+    ),
     showOnAbsoluteSlash: cfgExtension["showOnAbsoluteSlash"],
     filesExclude: cfgGeneral["exclude"],
     mappings,
@@ -34,19 +38,20 @@ async function getMappings(
 ): Promise<Mapping[]> {
   const mappings = parseMappings(configuration["mappings"]);
   const ignoreTsConfigBaseUrl = configuration["ignoreTsConfigBaseUrl"];
-  const tsConfigMappings = await (ignoreTsConfigBaseUrl ? [] : getWorkfolderTsConfigConfiguration(workfolder));
+  const tsConfigMappings = await (ignoreTsConfigBaseUrl
+    ? []
+    : getWorkfolderTsConfigConfiguration(workfolder));
   const allMappings = [...mappings, ...tsConfigMappings];
   return replaceWorkspaceFolder(allMappings, workfolder);
 }
 
-
 function resolveAbsolutePathTo(
   cfgPath?: string,
-  workfolder?: vscode.WorkspaceFolder,
-): string|null {
+  workfolder?: vscode.WorkspaceFolder
+): string | null {
   const rootPath = workfolder?.uri.path;
 
-  return (rootPath && cfgPath)
+  return rootPath && cfgPath
     ? replaceWorkspaceFolderWithRootPath(cfgPath, rootPath)
     : null;
 }
