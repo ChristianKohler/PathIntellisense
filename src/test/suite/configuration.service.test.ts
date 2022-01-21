@@ -220,9 +220,9 @@ suite("Configuration Service", () => {
   });
 
   test("asbolutePathTo and showOnAbsoluteSlash", async () => {
-    const DELAY = () => delay(500);
+    const DELAY = () => delay(1000);
     const P_PROJ = "project-three-absolute-changes";
-    subscribeToTsConfigChanges();
+    await subscribeToTsConfigChanges();
 
     const subTestResults: string[][] = [];
 
@@ -240,8 +240,7 @@ suite("Configuration Service", () => {
       afterSlash?: string;
     }) => {
       // Read existing configuration
-      const document = await openDocument(`demo-workspace/${P_PROJ}/index.js`);
-      const configuration = await getConfiguration(document.uri);
+      await openDocument(`demo-workspace/${P_PROJ}/index.js`);
 
       Promise.all(Object.entries(config).map(([k, v]) => setConfig(k, v)));
 
