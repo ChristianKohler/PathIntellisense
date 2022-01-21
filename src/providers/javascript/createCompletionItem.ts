@@ -10,15 +10,22 @@ export function createPathCompletionItem(
 ): vscode.CompletionItem {
   return fileInfo.isFile
     ? createFileItem(fileInfo, config, context)
-    : createFolderItem(fileInfo, config.autoSlash, context.importRange);
+    : createFolderItem(
+        fileInfo,
+        config.autoSlash,
+        config.autoTrigger,
+        context.importRange
+      );
 }
 
 function createFolderItem(
   fileInfo: FileInfo,
   autoSlash: boolean,
+  autoTrigger: boolean,
   importRange: vscode.Range
 ): vscode.CompletionItem {
-  var newText = autoSlash ? `${fileInfo.file}/` : `${fileInfo.file}`;
+  var newText =
+    autoSlash || autoTrigger ? `${fileInfo.file}/` : `${fileInfo.file}`;
 
   return {
     label: fileInfo.file,
@@ -26,6 +33,12 @@ function createFolderItem(
     sortText: `a_${fileInfo.file}`,
     range: importRange,
     insertText: newText,
+    command: autoTrigger
+      ? {
+          title: "Trigger suggest",
+          command: "editor.action.triggerSuggest",
+        }
+      : undefined,
   };
 }
 

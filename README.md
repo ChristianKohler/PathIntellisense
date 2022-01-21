@@ -118,6 +118,18 @@ Per default, the autocompletion does not add a slash after a directory.
 }
 ```
 
+### Automatically trigger next suggestion
+
+When a suggestion was selected, the next suggestion will automatically pop up.
+
+This setting will override the `autoSlashAfterDirectory` setting.
+
+```javascript
+{
+	"path-intellisense.autoTriggerNextSuggestion": false,
+}
+```
+
 ### Absolute paths
 
 Per default, absolute paths are resolved within the current workspace root path.
