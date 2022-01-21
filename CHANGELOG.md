@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.6.1...v2.7.0) (2022-01-21)
+
+
+### Features
+
+* automatically trigger next suggestion ([#195](https://github.com/ChristianKohler/PathIntellisense/issues/195)) ([051d7c8](https://github.com/ChristianKohler/PathIntellisense/commit/051d7c8fe3a2b47afbbd317b9fd50f17dc53679a)), closes [#194](https://github.com/ChristianKohler/PathIntellisense/issues/194)
+
 ## [2.6.1](https://github.com/ChristianKohler/PathIntellisense/compare/v2.6.0...v2.6.1) (2022-01-14)
 
 
