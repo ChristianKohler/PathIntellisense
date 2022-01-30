@@ -2,8 +2,6 @@
 
 Visual Studio Code plugin that autocompletes filenames.
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ChristianKohler/PathIntellisense)
-
 ## Sponsors
 
 <p><a title="Try CodeStream" href="https://sponsorlink.codestream.com/?utm_source=vscmarket&amp;utm_campaign=pathintel&amp;utm_medium=banner"><img src="https://alt-images.codestream.com/codestream_logo_pathintel.png"></a></br>
@@ -37,6 +35,8 @@ Use [npm intellisense](https://marketplace.visualstudio.com/items?itemName=chris
 
 Something missing? Found a bug? - Create a pull request or an issue.
 [Github](https://github.com/ChristianKohler/PathIntellisense)
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ChristianKohler/PathIntellisense)
 
 ## Are you a windows user?
 
