@@ -12,3 +12,7 @@ export function getAbsoluteUrl(relativeUri: string) {
   const rootUri = resolve(__dirname, "../../../src/test/");
   return resolve(rootUri, relativeUri);
 }
+
+export function getFileUri(relativeUri: string) {
+  return vscode.Uri.file(getAbsoluteUrl(relativeUri));
+}
