@@ -1,160 +1,86 @@
-import { subscribeToTsConfigChanges } from "../../configuration/tsconfig.service";
-import { delay } from "../utils/delay";
-import { openDocument } from "../utils/open-document";
-import * as vscode from "vscode";
-import { setConfig, setDefaults } from "../utils/set-config";
 import * as assert from "assert";
+import { afterEach, beforeEach } from "mocha";
+import * as vscode from "vscode";
+import { getFileUri } from "../utils/open-document";
+import { setConfig, setDefaults } from "../utils/set-config";
 
-suite("AbsolutePathTo", () => {
-  test("asbolutePathTo and showOnAbsoluteSlash", async () => {
-    const DELAY = () => delay(1000);
-    const P_PROJ = "project-three-absolute-changes";
-    await setDefaults();
-    await subscribeToTsConfigChanges();
+const testFile = "demo-workspace/project-three-absolute-changes/index.js";
 
-    const subTestResults: string[][] = [];
+suite.only("AbsolutePathTo", () => {
+  beforeEach(async () => {
+    await setConfig("absolutePathToWorkspace", true);
+    await setConfig("absolutePathTo", "${workspaceFolder}/myfolder/");
+    await setConfig("showOnAbsoluteSlash", true);
+    await setConfig("autoSlashAfterDirectory", true);
+  });
 
-    const subTest = async ({
-      testName,
-      config,
-      numSuggestions,
-      expectedText,
-      afterSlash,
-    }: {
-      testName: string;
-      config: any;
-      numSuggestions: number;
-      expectedText: string;
-      afterSlash?: string;
-    }) => {
-      // Read existing configuration
-      await openDocument(`demo-workspace/${P_PROJ}/index.js`);
+  afterEach(async () => {
+    setDefaults();
+  });
 
-      Promise.all(Object.entries(config).map(([k, v]) => setConfig(k, v)));
+  test("absolutePathTo basic", async () => {
+    const resultOne = await executeCompletionLine1();
+    assert.strictEqual(resultOne.items[0].label, "mysubfolder");
 
-      const editor: vscode.TextEditor = vscode.window.activeTextEditor!;
+    const resultTwo = await executeCompletionLine2();
+    assert.strictEqual(resultTwo.items[0].label, "fileInSubfolder.js");
+  });
 
-      const docInsert = (where: any, what: string) => {
-        return editor.edit((editBuilder) => {
-          editBuilder.insert(where, what);
-        });
-      };
+  test("autoslash", async () => {
+    const resultSlashTrue = await executeCompletionLine1();
+    assert.strictEqual(resultSlashTrue.items[0].insertText, "mysubfolder/");
 
-      const docDelete = (where: any) => {
-        return editor.edit((editBuilder) => {
-          editBuilder.delete(where);
-        });
-      };
+    await setConfig("autoSlashAfterDirectory", false);
 
-      const EVERYTHING = new vscode.Range(
-        new vscode.Position(0, 0),
-        new vscode.Position(0, 100)
-      );
+    const resultSlashFalse = await executeCompletionLine1();
+    assert.strictEqual(resultSlashFalse.items[0].insertText, "mysubfolder");
+  });
 
-      let jobSteps = docInsert(
-        editor.selection.active,
-        "import {foo} from '/"
-      ).then(DELAY);
+  test("absolutePathTo", async () => {
+    // Change absolutePathTo to just workspaceFolder (mimic absolutePathToWorkspace=true)
+    await setConfig("absolutePathTo", "${workspaceFolder}");
 
-      if (afterSlash) {
-        jobSteps = jobSteps
-          .then(() => docInsert(editor.selection.active, afterSlash))
-          .then(DELAY);
-      }
+    const result = await executeCompletionLine1();
+    assert.strictEqual(result.items[0].label, "myfolder");
+  });
 
-      for (let i = 0; i < numSuggestions; i++) {
-        jobSteps = jobSteps
-          .then(() =>
-            vscode.commands.executeCommand("editor.action.triggerSuggest")
-          )
-          .then(DELAY)
-          .then(() =>
-            vscode.commands.executeCommand("acceptSelectedSuggestion")
-          )
-          .then(DELAY);
+  test("absolutePathTo outside workspace folder", async () => {
+    // Use workspaceFolder + .. parent path
+    await setConfig("absolutePathTo", "${workspaceFolder}/..");
 
-        if (config.autoSlashAfterDirectory !== true) {
-          jobSteps = jobSteps
-            .then(() => docInsert(editor.selection.active, "/"))
-            .then(DELAY);
-        }
-      }
+    const result = await executeCompletionLine1();
+    assert.strictEqual(result.items[0].label, "project-one");
+  });
 
-      jobSteps = jobSteps
-        .then(() => {
-          const text = editor.document.getText();
-          subTestResults.push([testName, text, expectedText]);
-        })
-        .then(DELAY)
-        .then(() => docDelete(EVERYTHING))
-        .then(DELAY);
+  test("absolutePathTo with odd mapping", async () => {
+    // Ensure that (odd) mappings that start with '/' still work
+    await setConfig("mappings", { "/odd": "${workspaceFolder}/otherfolder" });
 
-      await jobSteps;
-    };
-
-    const configBase = {
-      absolutePathToWorkspace: true,
-      absolutePathTo: "${workspaceFolder}/myfolder/",
-      showOnAbsoluteSlash: true,
-      autoSlashAfterDirectory: true,
-    };
-
-    let subTests = [
-      // Basic test
-      {
-        testName: "basic",
-        config: configBase,
-        numSuggestions: 2,
-        expectedText: "import {foo} from '/mysubfolder/fileInSubfolder",
-      },
-      // Disable auto-slash
-      {
-        testName: "disable autoslash",
-        config: { ...configBase, autoSlashAfterDirectory: false },
-        numSuggestions: 2,
-        // Note: Even though 'fileInSubfolder is a file (.js), a trailing slash
-        //  is expected because of the test rig, not the extension
-        expectedText: "import {foo} from '/mysubfolder/fileInSubfolder/",
-      },
-      // Change absolutePathTo to just workspaceFolder (mimic absolutePathToWorkspace=true)
-      {
-        testName: "mimic absolutePathToWorkspace",
-        config: { ...configBase, absolutePathTo: "${workspaceFolder}" },
-        numSuggestions: 2,
-        expectedText: "import {foo} from '/myfolder/mysubfolder/",
-      },
-      // Use workspaceFolder + .. parent path
-      {
-        testName: "workspace parent",
-        config: { ...configBase, absolutePathTo: "${workspaceFolder}/.." },
-        numSuggestions: 3,
-        // Note: This is a little fragile, as it depends on the folder structure
-        //  outside the workspace folder.  If this fails, consider increasing
-        //  the delay and ensuring it still works (and just picks another path)
-        expectedText: "import {foo} from '/project-one/myfolder/mysubfolder/",
-      },
-      // Ensure that (odd) mappings that start with '/' still work
-      {
-        testName: "mappings",
-        config: {
-          ...configBase,
-          mappings: { "/o": "${workspaceFolder}/otherfolder" },
-        },
-        numSuggestions: 2,
-        // Note: This is a little fragile, as it depends on the folder structure
-        //  outside the workspace folder.  If this fails, consider increasing
-        //  the delay and ensuring it still works (and just picks another path)
-        afterSlash: "o/",
-        expectedText: "import {foo} from '/o/othersub/otherfile",
-      },
-    ];
-
-    for (let testDef of subTests) {
-      await subTest(testDef);
-    }
-
-    for (let [testName, text, expectedText] of subTestResults) {
-      assert.strictEqual(text, expectedText, testName);
-    }
-  }).timeout(60_000);
+    const result = await executeCompletionLine3();
+    assert.strictEqual(result.items[0].label, "othersub");
+  });
 });
+
+async function executeCompletionLine1() {
+  return (await vscode.commands.executeCommand(
+    "vscode.executeCompletionItemProvider",
+    getFileUri(testFile),
+    new vscode.Position(0, 19)
+  )) as vscode.CompletionList;
+}
+
+async function executeCompletionLine2() {
+  return (await vscode.commands.executeCommand(
+    "vscode.executeCompletionItemProvider",
+    getFileUri(testFile),
+    new vscode.Position(1, 31)
+  )) as vscode.CompletionList;
+}
+
+async function executeCompletionLine3() {
+  return (await vscode.commands.executeCommand(
+    "vscode.executeCompletionItemProvider",
+    getFileUri(testFile),
+    new vscode.Position(2, 23)
+  )) as vscode.CompletionList;
+}
