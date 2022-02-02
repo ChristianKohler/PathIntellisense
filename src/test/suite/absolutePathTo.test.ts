@@ -6,7 +6,7 @@ import { setConfig, setDefaults } from "../utils/set-config";
 
 const testFile = "demo-workspace/project-three-absolute-changes/index.js";
 
-suite.only("AbsolutePathTo", () => {
+suite("AbsolutePathTo", () => {
   beforeEach(async () => {
     await setConfig("absolutePathToWorkspace", true);
     await setConfig("absolutePathTo", "${workspaceFolder}/myfolder/");
