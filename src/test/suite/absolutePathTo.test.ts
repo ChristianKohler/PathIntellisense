@@ -20,20 +20,26 @@ suite.only("AbsolutePathTo", () => {
 
   test("absolutePathTo basic", async () => {
     const resultOne = await executeCompletionLine1();
-    assert.strictEqual(resultOne.items[0].label, "mysubfolder");
+    assert.ok(resultOne.items.some((item) => item.label === "mysubfolder"));
 
     const resultTwo = await executeCompletionLine2();
-    assert.strictEqual(resultTwo.items[0].label, "fileInSubfolder.js");
+    assert.ok(
+      resultTwo.items.some((item) => item.label === "fileInSubfolder.js")
+    );
   });
 
   test("autoslash", async () => {
     const resultSlashTrue = await executeCompletionLine1();
-    assert.strictEqual(resultSlashTrue.items[0].insertText, "mysubfolder/");
+    assert.ok(
+      resultSlashTrue.items.some((item) => item.insertText === "mysubfolder/")
+    );
 
     await setConfig("autoSlashAfterDirectory", false);
 
     const resultSlashFalse = await executeCompletionLine1();
-    assert.strictEqual(resultSlashFalse.items[0].insertText, "mysubfolder");
+    assert.ok(
+      resultSlashFalse.items.some((item) => item.insertText === "mysubfolder")
+    );
   });
 
   test("absolutePathTo", async () => {
@@ -41,7 +47,7 @@ suite.only("AbsolutePathTo", () => {
     await setConfig("absolutePathTo", "${workspaceFolder}");
 
     const result = await executeCompletionLine1();
-    assert.strictEqual(result.items[0].label, "myfolder");
+    assert.ok(result.items.some((item) => item.label === "myfolder"));
   });
 
   test("absolutePathTo outside workspace folder", async () => {
@@ -49,7 +55,7 @@ suite.only("AbsolutePathTo", () => {
     await setConfig("absolutePathTo", "${workspaceFolder}/..");
 
     const result = await executeCompletionLine1();
-    assert.strictEqual(result.items[0].label, "project-one");
+    assert.ok(result.items.some((item) => item.label === "project-one"));
   });
 
   test("absolutePathTo with odd mapping", async () => {
@@ -57,7 +63,7 @@ suite.only("AbsolutePathTo", () => {
     await setConfig("mappings", { "/odd": "${workspaceFolder}/otherfolder" });
 
     const result = await executeCompletionLine3();
-    assert.strictEqual(result.items[0].label, "othersub");
+    assert.ok(result.items.some((item) => item.label === "othersub"));
   });
 });
 
