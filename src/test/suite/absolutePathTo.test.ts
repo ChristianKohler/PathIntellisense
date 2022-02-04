@@ -15,7 +15,7 @@ suite("AbsolutePathTo", () => {
   });
 
   afterEach(async () => {
-    setDefaults();
+    await setDefaults();
   });
 
   test("absolutePathTo basic", async () => {
