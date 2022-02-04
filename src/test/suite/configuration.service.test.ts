@@ -21,6 +21,7 @@ suite("Configuration Service", () => {
 
     await setConfig("absolutePathToWorkspace", true);
     await setConfig("extensionOnImport", true);
+    await setConfig("ignoreTsConfigBaseUrl", false);
     await setConfig("mappings", {
       lib: "${workspaceFolder}/lib",
     });
@@ -101,8 +102,7 @@ suite("Configuration Service", () => {
   });
 
   test("does not use tsconfig if disabled", async () => {
-    await subscribeToTsConfigChanges();
-
+    await setConfig("ignoreTsConfigBaseUrl", false);
     const documentOne = await openDocument(
       "demo-workspace/project-one/index.js"
     );
@@ -120,6 +120,7 @@ suite("Configuration Service", () => {
     await subscribeToTsConfigChanges();
 
     await setConfig("absolutePathToWorkspace", true);
+    await setConfig("ignoreTsConfigBaseUrl", false);
     await setConfig("extensionOnImport", true);
     await setConfig("mappings", {
       lib: "${workspaceFolder}/lib",
