@@ -19,5 +19,5 @@ export async function setDefaults() {
   await setConfig("showOnAbsoluteSlash", undefined);
   await setConfig("exclude", undefined);
   await setConfig("mappings", undefined);
-  await setConfig("ignoreTsConfigBaseUrl", false);
+  await setConfig("ignoreTsConfigBaseUrl", undefined);
 }

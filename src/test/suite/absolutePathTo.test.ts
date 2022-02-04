@@ -26,10 +26,14 @@ suite("AbsolutePathTo", () => {
     assert.strictEqual(resultTwo.items[0].label, "fileInSubfolder.js");
   });
 
-  test("autoslash", async () => {
+  test("autoslash on", async () => {
+    await setConfig("autoSlashAfterDirectory", true);
+
     const resultSlashTrue = await executeCompletionLine1();
     assert.strictEqual(resultSlashTrue.items[0].insertText, "mysubfolder/");
+  });
 
+  test("autoslash off", async () => {
     await setConfig("autoSlashAfterDirectory", false);
 
     const resultSlashFalse = await executeCompletionLine1();
