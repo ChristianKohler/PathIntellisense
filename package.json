@@ -89,6 +89,7 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "test": "node ./out/test/runTest.js",
+    "test-headless": "xvfb-run -a npm test",
     "package": "vsce package",
     "deploy": "vsce publish",
     "prepack": "npm run package && npm run package-web",
