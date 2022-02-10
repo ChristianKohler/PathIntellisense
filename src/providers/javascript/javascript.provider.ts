@@ -55,10 +55,11 @@ function shouldProvide(context: Context, config: Config): boolean {
     fromString.startsWith(key)
   );
 
-  return isImport && (
-    startsWithDot
-    || startsWithMapping
-    || (startsWithSlash && config.showOnAbsoluteSlash)
+  return (
+    isImport &&
+    (startsWithDot ||
+      startsWithMapping ||
+      (startsWithSlash && config.showOnAbsoluteSlash))
   );
 }
 
@@ -71,10 +72,9 @@ async function provide(
 ): Promise<vscode.CompletionItem[]> {
   const workspace = vscode.workspace.getWorkspaceFolder(context.document.uri);
 
-
-  const rootPath = config.absolutePathTo||(config.absolutePathToWorkspace
-    ? workspace?.uri.fsPath
-    : undefined);
+  const rootPath =
+    config.absolutePathTo ||
+    (config.absolutePathToWorkspace ? workspace?.uri.fsPath : undefined);
 
   const path = getPathOfFolderToLookupFiles(
     context.document.uri.fsPath,
@@ -83,7 +83,11 @@ async function provide(
     config.mappings
   );
 
-  const childrenOfPath = await getChildrenOfPath(path, config);
+  const childrenOfPath = await getChildrenOfPath(
+    path,
+    config.showHiddenFiles,
+    config.filesExclude
+  );
 
   return [
     ...childrenOfPath.map((child) =>

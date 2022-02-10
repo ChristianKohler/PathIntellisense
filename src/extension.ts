@@ -10,7 +10,7 @@ export function activate(context: ExtensionContext) {
   /**
    * Subscribe to the ts config changes
    */
-  context.subscriptions.push(...subscribeToTsConfigChanges());
+  subscribeToTsConfigChanges(context);
 
   /**
    * Register Providers
