@@ -1,9 +1,18 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
+import { beforeEach, afterEach } from "mocha";
 import { getFileUri } from "../utils/open-document";
-import { setConfig } from "../utils/set-config";
+import { setConfig, setDefaults } from "../utils/set-config";
 
 suite("BaseUrl", () => {
+  beforeEach(async () => {
+    await setDefaults();
+  });
+
+  afterEach(async () => {
+    await setDefaults();
+  });
+
   suite("with baseUrl ./", () => {
     const project = "demo-workspace/project-withBaseUrlRoot";
     const fileInFolder = `${project}/myfolder/fileInFolder.js`;
