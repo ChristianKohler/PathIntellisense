@@ -34,6 +34,11 @@ suite("Configuration Service", () => {
     const document2 = await openDocument("demo-workspace/project-two/index.js");
     const configurationProjectTwo = await getConfiguration(document2.uri);
 
+    console.log("####");
+    console.log(JSON.stringify(configurationProjectOne));
+    console.log(JSON.stringify(configurationProjectTwo));
+    console.log("####");
+
     assert.strictEqual(
       configurationProjectOne?.absolutePathToWorkspace,
       true,
