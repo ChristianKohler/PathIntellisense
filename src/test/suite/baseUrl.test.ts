@@ -37,13 +37,6 @@ suite("BaseUrl", () => {
     test("Get correct file when using baseUrl", async () => {
       await setConfig("ignoreTsConfigBaseUrl", false);
       const result = await triggerCompletion(fileInBar, 0, 22);
-
-      for (const item of result.items) {
-        console.log("====");
-        console.log(item.label);
-        console.log("====");
-      }
-
       assert.ok(hasItem(result, "foo-a"));
       assert.ok(hasItem(result, "foo-b"));
     });
@@ -51,13 +44,6 @@ suite("BaseUrl", () => {
     test("Get correct file when using baseUrl in subfolders", async () => {
       await setConfig("ignoreTsConfigBaseUrl", false);
       const result = await triggerCompletion(fileInBar, 1, 28);
-
-      for (const item of result.items) {
-        console.log("====");
-        console.log(item.label);
-        console.log("====");
-      }
-
       assert.ok(hasItem(result, "foo-a1"));
       assert.ok(hasItem(result, "foo-a2"));
     });
