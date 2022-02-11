@@ -41,7 +41,7 @@ Use [npm intellisense](https://marketplace.visualstudio.com/items?itemName=chris
 Something missing? Found a bug? - Create a pull request or an issue.
 [Github](https://github.com/ChristianKohler/PathIntellisense)
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ChristianKohler/PathIntellisense)
+[Open in Gitpod](https://gitpod.io/#https://github.com/ChristianKohler/PathIntellisense)
 
 ## Are you a windows user?
 
