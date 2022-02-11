@@ -1,5 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "baseurl-one"
+    "baseUrl": "myfolder"
   }
 }

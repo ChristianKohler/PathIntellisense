@@ -1,8 +1,11 @@
-import * as path from "path";
-import * as vscode from "vscode";
-import { Mapping, Config } from "../configuration/configuration.interface";
 import * as minimatch from "minimatch";
+import * as path from "path";
 import { join } from "path";
+import * as vscode from "vscode";
+import {
+  FilesExclude,
+  Mapping,
+} from "../configuration/configuration.interface";
 
 export interface FileInfo {
   file: string;
@@ -30,7 +33,9 @@ export function getPathOfFolderToLookupFiles(
   const mapping =
     mappings &&
     mappings.reduce((prev: any, curr: any) => {
-      return prev || (normalizedText.startsWith(path.normalize(curr.key)) && curr);
+      return (
+        prev || (normalizedText.startsWith(path.normalize(curr.key)) && curr)
+      );
     }, undefined);
 
   let rootFolder, pathEntered;
@@ -45,14 +50,18 @@ export function getPathOfFolderToLookupFiles(
   } else {
     // We only care about whether the path specified was absolute if it's unmapped (e.g.
     //  we allow user-specified maps to "override" (skip) this root folder determination.)
-    rootFolder = isPathAbsolute ? (rootPath || "") : path.dirname(fileName);
+    rootFolder = isPathAbsolute ? rootPath || "" : path.dirname(fileName);
     pathEntered = normalizedText;
   }
 
   return path.join(rootFolder, pathEntered);
 }
 
-export async function getChildrenOfPath(path: string, config: Config) {
+export async function getChildrenOfPath(
+  path: string,
+  showHiddenFiles: boolean,
+  filesExclude: FilesExclude
+) {
   try {
     const filesTubles = await vscode.workspace.fs.readDirectory(
       vscode.Uri.file(path)
@@ -60,7 +69,9 @@ export async function getChildrenOfPath(path: string, config: Config) {
 
     const files = filesTubles
       .map((fileTuble) => fileTuble[0])
-      .filter((filename) => filterHiddenFiles(filename, config));
+      .filter((filename) =>
+        filterHiddenFiles(filename, showHiddenFiles, filesExclude)
+      );
 
     const fileInfoList: FileInfo[] = [];
 
@@ -90,15 +101,21 @@ function getDocumentExtension(file: string, fileStat: vscode.FileStat) {
   return fragments[fragments.length - 1];
 }
 
-function filterHiddenFiles(filename: string, config: Config) {
-  if (config.showHiddenFiles) {
+function filterHiddenFiles(
+  filename: string,
+  showHiddenFiles: boolean,
+  filesExclude: FilesExclude
+) {
+  if (showHiddenFiles) {
     return true;
   }
-  return isFileHidden(filename, config) ? false : true;
+  return isFileHidden(filename, filesExclude) ? false : true;
 }
 
-function isFileHidden(filename: string, config: Config) {
-  return filename.startsWith(".") || isFileHiddenByVsCode(filename, config);
+function isFileHidden(filename: string, filesExclude: FilesExclude) {
+  return (
+    filename.startsWith(".") || isFileHiddenByVsCode(filename, filesExclude)
+  );
 }
 
 // files.exclude has the following form. key is the glob
@@ -106,11 +123,11 @@ function isFileHidden(filename: string, config: Config) {
 //    "**//*.js": true
 //    "**//*.js": true "*.git": true
 // }
-function isFileHiddenByVsCode(filename: string, config: Config) {
+function isFileHiddenByVsCode(filename: string, filesExclude: FilesExclude) {
   return (
-    config.filesExclude &&
-    Object.keys(config.filesExclude).some(
-      (key) => config.filesExclude[key] && minimatch(filename, key)
+    filesExclude &&
+    Object.keys(filesExclude).some(
+      (key) => filesExclude[key] && minimatch(filename, key)
     )
   );
 }
@@ -122,7 +139,10 @@ function isFileHiddenByVsCode(filename: string, config: Config) {
  * @param value
  * @param rootPath
  */
-export function replaceWorkspaceFolderWithRootPath(value: string, rootPath: string) {
+export function replaceWorkspaceFolderWithRootPath(
+  value: string,
+  rootPath: string
+) {
   return value
     .replace("${workspaceRoot}", rootPath)
     .replace("${workspaceFolder}", rootPath);

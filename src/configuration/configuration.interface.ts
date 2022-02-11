@@ -7,7 +7,11 @@ export interface Config {
   absolutePathToWorkspace: boolean;
   absolutePathTo: string | null;
   showOnAbsoluteSlash: boolean;
-  filesExclude: { [key: string]: string };
+  filesExclude: FilesExclude;
+}
+
+export interface FilesExclude {
+  [key: string]: string;
 }
 
 export interface Mapping {

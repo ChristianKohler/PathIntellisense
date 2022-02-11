@@ -12,9 +12,15 @@
     {
       "path": "project-three-absolute-changes"
     },
+    {
+      "path": "project-withBaseUrlRoot"
+    },
+    {
+      "path": "project-withBaseUrlRoot2"
+    }
   ],
   "settings": {
     "typescript.suggest.paths": false,
-    "javascript.suggest.paths": false,
+    "javascript.suggest.paths": false
   }
 }

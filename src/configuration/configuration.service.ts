@@ -38,9 +38,15 @@ async function getMappings(
 ): Promise<Mapping[]> {
   const mappings = parseMappings(configuration["mappings"]);
   const ignoreTsConfigBaseUrl = configuration["ignoreTsConfigBaseUrl"];
+  const showHiddenFiles = configuration["showHiddenFiles"];
+  const filesExclude = configuration["exclude"];
   const tsConfigMappings = await (ignoreTsConfigBaseUrl
     ? []
-    : getWorkfolderTsConfigConfiguration(workfolder));
+    : getWorkfolderTsConfigConfiguration(
+        workfolder,
+        showHiddenFiles,
+        filesExclude
+      ));
   const allMappings = [...mappings, ...tsConfigMappings];
   return replaceWorkspaceFolder(allMappings, workfolder);
 }

@@ -17,7 +17,9 @@ suite("Configuration Service", () => {
   });
 
   test("has different configuration for the workspaceFolders", async () => {
-    await subscribeToTsConfigChanges();
+    await subscribeToTsConfigChanges({
+      subscriptions: [],
+    } as unknown as vscode.ExtensionContext);
 
     await setConfig("absolutePathToWorkspace", true);
     await setConfig("extensionOnImport", true);
@@ -49,7 +51,7 @@ suite("Configuration Service", () => {
     );
     assertEndsWith(
       configurationProjectOne?.mappings[1].value,
-      "/demo-workspace/project-one/baseurl-one",
+      "/project-one/myfolder/mysubfolder",
       "1:mappings[1]"
     );
 
@@ -70,19 +72,23 @@ suite("Configuration Service", () => {
     );
     assertEndsWith(
       configurationProjectTwo?.mappings[1].value,
-      "/demo-workspace/project-two/baseurl-two",
+      "/project-two/.//folderInTwo",
       "1:mappings[1]"
     );
   });
 
   test("still can load the config with a wrong ts config", async () => {
     assert.doesNotThrow(async () => {
-      await subscribeToTsConfigChanges();
+      await subscribeToTsConfigChanges({
+        subscriptions: [],
+      } as unknown as vscode.ExtensionContext);
     });
   });
 
   test("has default configuration for non project folder files", async () => {
-    await subscribeToTsConfigChanges();
+    await subscribeToTsConfigChanges({
+      subscriptions: [],
+    } as unknown as vscode.ExtensionContext);
 
     await setConfig("absolutePathToWorkspace", true);
     await setConfig("extensionOnImport", true);
@@ -117,7 +123,9 @@ suite("Configuration Service", () => {
   });
 
   test("updates configuration on tsconfig change", async () => {
-    await subscribeToTsConfigChanges();
+    await subscribeToTsConfigChanges({
+      subscriptions: [],
+    } as unknown as vscode.ExtensionContext);
 
     await setConfig("absolutePathToWorkspace", true);
     await setConfig("ignoreTsConfigBaseUrl", false);
@@ -139,7 +147,7 @@ suite("Configuration Service", () => {
     const document = await vscode.workspace.openTextDocument(absoluteUrl);
     await vscode.window.showTextDocument(document);
     await vscode.window.activeTextEditor?.edit((editbuilder) => {
-      editbuilder.replace(new vscode.Range(2, 24, 2, 27), "bla");
+      editbuilder.replace(new vscode.Range(2, 16, 2, 24), "otherfolder");
     });
     await document.save();
 
@@ -155,20 +163,20 @@ suite("Configuration Service", () => {
     // Clean up
     await vscode.window.showTextDocument(document);
     await vscode.window.activeTextEditor?.edit((editbuilder) => {
-      editbuilder.replace(new vscode.Range(2, 24, 2, 27), "one");
+      editbuilder.replace(new vscode.Range(2, 16, 2, 27), "myfolder");
     });
     await document.save();
 
     assert.strictEqual(
       configuration?.mappings[1].value.endsWith(
-        "/demo-workspace/project-one/baseurl-one"
+        "/demo-workspace/project-one/myfolder/mysubfolder"
       ),
       true
     );
 
     assert.strictEqual(
       newConfiguration?.mappings[1].value.endsWith(
-        "/demo-workspace/project-one/baseurl-bla"
+        "/demo-workspace/project-one/otherfolder/othersubfolder"
       ),
       true
     );

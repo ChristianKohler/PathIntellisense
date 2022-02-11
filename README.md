@@ -61,7 +61,18 @@ Pathintellisense uses the ts.config.compilerOptions.baseUrl as a mapping. So no 
 
 For example:
 
+```markdown
+# Folderstructure
+
+src/
+module-a
+foo.ts
+module-b
+```
+
 ```javascript
+// tsconfig
+
 {
 	"baseUrl": "src",
 }
@@ -71,7 +82,7 @@ would allow to type:
 
 ```javascript
 {
-  import {} from "src/mymodule";
+  import {} from "module-a/foo.ts";
 }
 ```
 
