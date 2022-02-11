@@ -12,6 +12,11 @@ Eliminate context switching and costly distractions. Create and merge PRs and pe
 Track and prioritise tech debt and maintenance issues, straight from your IDE. Bookmark code while you work, organise TODOs and share codebase knowledge with your team. <a title="Try stepsize" href="https://bit.ly/36ccDka">Try it out for free today.</a>
 </p>
 
+<p>
+<a title="Try Duckly" href="https://bit.ly/3shNY8x"><img src="./docs/images/sponsors/duckly.png"></a></br>
+Easy pair programming with any IDE. Duckly enables you to talk, share your code in real-time, server and terminal with people using different IDEs. <a title="Try stepsize" href="https://bit.ly/3shNY8x">Try it out for free.</a>
+</p>
+
 ## Installation
 
 In the command palette (cmd-shift-p) select Install Extension and choose Path Intellisense.
