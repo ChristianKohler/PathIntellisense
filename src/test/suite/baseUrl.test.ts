@@ -3,7 +3,6 @@ import * as vscode from "vscode";
 import { beforeEach, afterEach } from "mocha";
 import { getFileUri } from "../utils/open-document";
 import { setConfig, setDefaults } from "../utils/set-config";
-import { getConfiguration } from "../../configuration/configuration.service";
 
 suite("BaseUrl", () => {
   beforeEach(async () => {
@@ -38,11 +37,6 @@ suite("BaseUrl", () => {
     test("Get correct file when using baseUrl", async () => {
       await setConfig("ignoreTsConfigBaseUrl", false);
       const result = await triggerCompletion(fileInBar, 0, 22);
-
-      const configuration = await getConfiguration(getFileUri(fileInBar));
-      console.log("========");
-      console.log(JSON.stringify(configuration));
-      console.log("========");
 
       for (const item of result.items) {
         console.log("====");
