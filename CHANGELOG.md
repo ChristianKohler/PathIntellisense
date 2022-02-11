@@ -1,3 +1,20 @@
+# [2.8.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.7.0...v2.8.0) (2022-02-11)
+
+
+### Bug Fixes
+
+* **test:** remove suite.only [skip ci] ([7e7fab8](https://github.com/ChristianKohler/PathIntellisense/commit/7e7fab8baf7c43755788e0d725aa2cbad13bf3ae))
+* **tests:** add missing await ([1b84521](https://github.com/ChristianKohler/PathIntellisense/commit/1b845218c0f7afb914550ba707ae0de684291b6c))
+* **tests:** add missing file ([52f137b](https://github.com/ChristianKohler/PathIntellisense/commit/52f137bd3797a479caf6a459691abf624e096e5e))
+* **tests:** add tsconfig settings correctly [skip ci] ([2345cb6](https://github.com/ChristianKohler/PathIntellisense/commit/2345cb66dee832ed85258b8e3a6aa742954f9422))
+* **tests:** make tests more robust ([d102c1b](https://github.com/ChristianKohler/PathIntellisense/commit/d102c1ba7532b3d0bd812f3f19265477130efb76))
+* **tests:** make them work [skip ci] ([7b7fbb9](https://github.com/ChristianKohler/PathIntellisense/commit/7b7fbb9ea0db0de0c4d6e2a20667b930a0eb043e))
+
+
+### Features
+
+* **baseUrl:** add extended support ([a2307ad](https://github.com/ChristianKohler/PathIntellisense/commit/a2307ad75429ce20cdc20becd2016f8f8e5c1180)), closes [#196](https://github.com/ChristianKohler/PathIntellisense/issues/196)
+
 # [2.7.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.6.1...v2.7.0) (2022-01-21)
 
 
