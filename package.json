@@ -9,6 +9,9 @@
     "vscode": "^1.43.0"
   },
   "homepage": "https://github.com/ChristianKohler/PathIntellisense",
+  "sponsor": {
+    "url": "https://github.com/sponsors/ChristianKohler"
+  },  
   "repository": {
     "type": "git",
     "url": "https://github.com/ChristianKohler/PathIntellisense.git"
