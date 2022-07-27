@@ -38,46 +38,55 @@
         "path-intellisense.extensionOnImport": {
           "type": "boolean",
           "default": false,
-          "description": "Adds the file extension to a import statements"
+          "description": "Adds the file extension to a import statements",
+          "scope": "resource"
         },
         "path-intellisense.mappings": {
           "type": "object",
           "default": {},
-          "description": "Mappings for paths.  The values should be interpreted as absolute paths (and can use '${workspaceFolder}')"
+          "description": "Mappings for paths.  The values should be interpreted as absolute paths (and can use '${workspaceFolder}')",
+          "scope": "resource"
         },
         "path-intellisense.showHiddenFiles": {
           "type": "boolean",
           "default": false,
-          "description": "Show hidden files"
+          "description": "Show hidden files",
+          "scope": "resource"
         },
         "path-intellisense.autoSlashAfterDirectory": {
           "type": "boolean",
           "default": false,
-          "description": "Automatically adds slash after directory"
+          "description": "Automatically adds slash after directory",
+          "scope": "resource"
         },
         "path-intellisense.absolutePathToWorkspace": {
           "type": "boolean",
           "default": true,
-          "description": "Sets an absolute path to the current workspace"
+          "description": "Sets an absolute path to the current workspace",
+          "scope": "resource"
         },
         "path-intellisense.absolutePathTo": {
           "type": "string",
-          "description": "If defined, unmapped absolute path imports are based on this location.  Takes priority over 'absolutePathToWorkspace' if both are defined"
+          "description": "If defined, unmapped absolute path imports are based on this location.  Takes priority over 'absolutePathToWorkspace' if both are defined",
+          "scope": "resource"
         },
         "path-intellisense.showOnAbsoluteSlash": {
           "type": "boolean",
           "default": true,
-          "description": "Shows suggestions when the import starts with a forward slash ('/')"
+          "description": "Shows suggestions when the import starts with a forward slash ('/')",
+          "scope": "resource"
         },
         "path-intellisense.ignoreTsConfigBaseUrl": {
           "type": "boolean",
           "default": false,
-          "description": "Ignores tsconfig file for mappings"
+          "description": "Ignores tsconfig file for mappings",
+          "scope": "resource"
         },
         "path-intellisense.autoTriggerNextSuggestion": {
           "type": "boolean",
           "default": false,
-          "description": "Automatically triggers next suggestion after previous suggestion"
+          "description": "Automatically triggers next suggestion after previous suggestion",
+          "scope": "resource"
         }
       }
     }
