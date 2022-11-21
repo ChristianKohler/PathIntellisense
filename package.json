@@ -3,7 +3,7 @@
   "private": true,
   "displayName": "Path Intellisense",
   "description": "Visual Studio Code plugin that autocompletes filenames",
-  "version": "2.8.2",
+  "version": "2.8.3",
   "publisher": "christian-kohler",
   "engines": {
     "vscode": "^1.43.0"
