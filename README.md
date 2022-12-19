@@ -13,10 +13,6 @@ Eliminate context switching and costly distractions. Create and merge PRs and pe
 Track and prioritise tech debt and maintenance issues, straight from your IDE. Bookmark code while you work, organise TODOs and share codebase knowledge with your team. <a title="Try stepsize" href="https://bit.ly/36ccDka">Try it out for free today.</a>
 </p>
 <br />
-<p>
-<a title="Try documatic" href="https://app.documatic.com/integration/vscode?utm_source=Path+Intellisense&utm_medium=banner&utm_id=VSCode"><img src="./docs/images/sponsors/documatic.png"></a></br>
-Navigate through large codebases and onboard engineers quicker than before using Documatic. A search engine for your codebase; Ask documatic a question in your IDE and find relevant code snippets and insights in seconds. <a title="Try stepsize" href="https://app.documatic.com/integration/vscode?utm_source=Path+Intellisense&utm_medium=banner&utm_id=VSCode">Use it for free here.</a>
-</p>
 
 ## Installation
 
