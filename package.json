@@ -113,7 +113,7 @@
     "@typescript-eslint/parser": "^2.18.0",
     "eslint": "^6.8.0",
     "glob": "^7.1.6",
-    "mocha": "^7.0.1",
+    "mocha": "^10.2.0",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "ts-loader": "^9.2.5",
