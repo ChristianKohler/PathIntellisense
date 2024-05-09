@@ -17,6 +17,9 @@
     },
     {
       "path": "project-withBaseUrlRoot2"
+    },
+    {
+      "path": "project-nixos-config"
     }
   ],
   "settings": {

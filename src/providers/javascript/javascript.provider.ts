@@ -66,9 +66,10 @@ function shouldProvide(context: Context, config: Config): boolean {
 /**
  * Provide Completion Items
  */
-async function provide(
+export async function provide(
   context: Context,
-  config: Config
+  config: Config,
+  directPathString?: string
 ): Promise<vscode.CompletionItem[]> {
   const workspace = vscode.workspace.getWorkspaceFolder(context.document.uri);
 
@@ -78,7 +79,7 @@ async function provide(
 
   const path = getPathOfFolderToLookupFiles(
     context.document.uri.fsPath,
-    context.fromString,
+    directPathString ?? context.fromString,
     rootPath,
     config.mappings
   );
