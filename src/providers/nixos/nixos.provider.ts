@@ -2,9 +2,9 @@ import * as vscode from "vscode";
 import { PathIntellisenseProvider } from "../provider.interface";
 import { getConfiguration } from "../../configuration/configuration.service";
 import { Config, Mapping } from "../../configuration/configuration.interface";
-import { createContext, Context } from "../javascript/createContext";
-
-import { provide } from '../javascript/javascript.provider';
+import { createContext, Context } from "../../utils/createContext";
+import { getChildrenOfPath, getPathOfFolderToLookupFiles } from '../../utils/file-utills';
+import { createPathCompletionItem } from '../../utils/createCompletionItem';
 
 export const NixProvider: PathIntellisenseProvider = {
   selector: {
@@ -69,4 +69,38 @@ function getTypedString(context: Context, config: Config): null | string {
   }
 
   return null;
+}
+
+/**
+ * Provide Completion Items
+ */
+export async function provide(
+  context: Context,
+  config: Config,
+  directPathString?: string
+): Promise<vscode.CompletionItem[]> {
+  const workspace = vscode.workspace.getWorkspaceFolder(context.document.uri);
+
+  const rootPath =
+    config.absolutePathTo ||
+    (config.absolutePathToWorkspace ? workspace?.uri.fsPath : undefined);
+
+  const path = getPathOfFolderToLookupFiles(
+    context.document.uri.fsPath,
+    directPathString ?? context.fromString,
+    rootPath,
+    config.mappings
+  );
+
+  const childrenOfPath = await getChildrenOfPath(
+    path,
+    config.showHiddenFiles,
+    config.filesExclude
+  );
+
+  return [
+    ...childrenOfPath.map((child) =>
+      createPathCompletionItem(child, config, context)
+    ),
+  ];
 }

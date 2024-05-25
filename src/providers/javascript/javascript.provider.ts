@@ -2,9 +2,9 @@ import * as vscode from "vscode";
 import { PathIntellisenseProvider } from "../provider.interface";
 import { getConfiguration } from "../../configuration/configuration.service";
 import { Config, Mapping } from "../../configuration/configuration.interface";
-import { createContext, Context } from "./createContext";
+import { createContext, Context } from "../../utils/createContext";
 
-import { createPathCompletionItem } from "./createCompletionItem";
+import { createPathCompletionItem } from "../../utils/createCompletionItem";
 import {
   getPathOfFolderToLookupFiles,
   getChildrenOfPath,
