@@ -74,10 +74,10 @@ function getTypedString(context: Context, config: Config): null | string {
 /**
  * Provide Completion Items
  */
-export async function provide(
+async function provide(
   context: Context,
   config: Config,
-  directPathString?: string
+  directPathString: string
 ): Promise<vscode.CompletionItem[]> {
   const workspace = vscode.workspace.getWorkspaceFolder(context.document.uri);
 
@@ -87,7 +87,7 @@ export async function provide(
 
   const path = getPathOfFolderToLookupFiles(
     context.document.uri.fsPath,
-    directPathString ?? context.fromString,
+    directPathString,
     rootPath,
     config.mappings
   );
