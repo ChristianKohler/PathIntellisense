@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { Context } from "./createContext";
-import { Config } from "../../configuration/configuration.interface";
-import { FileInfo } from "../../utils/file-utills";
+import { Config } from "../configuration/configuration.interface";
+import { FileInfo } from "./file-utills";
 
 export function createPathCompletionItem(
   fileInfo: FileInfo,
