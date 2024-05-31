@@ -1,7 +1,7 @@
 import * as path from "path";
 
-import { runTests } from "vscode-test";
-import { TestOptions } from "vscode-test/out/runTest";
+import { runTests } from "@vscode/test-electron";
+import { TestOptions } from "@vscode/test-electron/out/runTest";
 
 async function main() {
   try {
@@ -14,8 +14,8 @@ async function main() {
       extensionTestsPath: path.resolve(__dirname, "./suite/index"),
       launchArgs: [
         `${path.resolve("./src/test/demo-workspace/demo.code-workspace")}`,
-        "--disable-extensions"
-      ]
+        "--disable-extensions",
+      ],
     };
 
     // Download VS Code, unzip it and run the integration test
