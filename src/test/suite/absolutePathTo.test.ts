@@ -53,7 +53,7 @@ suite("AbsolutePathTo", () => {
     await setConfig("absolutePathTo", "${workspaceFolder}/..");
 
     const result = await executeCompletionLine1();
-    assert.strictEqual(result.items[0].label, "project-one");
+    assert.strictEqual(result.items[1].label, "project-one");
   });
 
   test("absolutePathTo with odd mapping", async () => {
