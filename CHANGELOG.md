@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.8.0...v2.9.0) (2024-06-01)
+
+
+### Features
+
+* added support for NixOS config files ([#229](https://github.com/ChristianKohler/PathIntellisense/issues/229)) ([6aa458c](https://github.com/ChristianKohler/PathIntellisense/commit/6aa458c49a7ed4cfa91b4d380fcbe42e31280526))
+
 # [2.8.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.7.0...v2.8.0) (2022-02-11)
 
 
