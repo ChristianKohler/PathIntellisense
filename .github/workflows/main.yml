@@ -28,30 +28,3 @@ jobs:
         uses: coactions/setup-xvfb@v1
         with:
           run: npm test
-
-  publish:
-    name: Release and publish
-    if: github.event_name != 'pull_request'
-    needs: test
-    runs-on: ubuntu-18.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16
-      - name: Install dependencies
-        run: npm install
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
-        run: npx semantic-release
-      - name: Publish
-        if: success()
-        run: npm run deploy
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
-      - name: Publish to OpenVSX
-        if: success()
-        run: npx ovsx publish -p ${{ secrets.OVSX_PAT }} 
