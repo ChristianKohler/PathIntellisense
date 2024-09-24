@@ -29,6 +29,8 @@ export async function getConfiguration(
     showOnAbsoluteSlash: cfgExtension["showOnAbsoluteSlash"],
     filesExclude: cfgGeneral["exclude"],
     mappings,
+    sortBy: cfgExtension["sortBy"],
+    showFoldersBeforeFiles: cfgExtension["showFoldersBeforeFiles"],
   };
 }
 

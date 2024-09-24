@@ -30,7 +30,7 @@ function createFolderItem(
   return {
     label: fileInfo.file,
     kind: vscode.CompletionItemKind.Folder,
-    sortText: `a_${fileInfo.file}`,
+    sortText: fileInfo.sortKey,
     range: importRange,
     insertText: newText,
     command: autoTrigger
@@ -52,7 +52,7 @@ function createFileItem(
   return {
     label: fileInfo.file,
     kind: vscode.CompletionItemKind.File,
-    sortText: `b_${fileInfo.file}`,
+    sortText: fileInfo.sortKey,
     range: context.importRange,
     insertText: insertText,
   };

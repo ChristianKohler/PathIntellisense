@@ -95,7 +95,8 @@ async function provide(
   const childrenOfPath = await getChildrenOfPath(
     path,
     config.showHiddenFiles,
-    config.filesExclude
+    config.filesExclude,
+    { sortBy: config.sortBy, showFoldersBeforeFiles: config.showFoldersBeforeFiles }
   );
 
   return [

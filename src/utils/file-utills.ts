@@ -5,12 +5,14 @@ import * as vscode from "vscode";
 import {
   FilesExclude,
   Mapping,
+  SortBy,
 } from "../configuration/configuration.interface";
 
 export interface FileInfo {
   file: string;
   isFile: boolean;
   documentExtension?: string;
+  sortKey?: string;
 }
 
 /**
@@ -57,10 +59,87 @@ export function getPathOfFolderToLookupFiles(
   return path.join(rootFolder, pathEntered);
 }
 
+function isReverseSort(sortBy: SortBy) {
+  return sortBy.startsWith("r-");
+}
+
+function getValueToSortBy(sortBy: SortBy, fileInfo: FileInfo, stat: vscode.FileStat): number | string {
+  const name = fileInfo.file;
+  switch (sortBy) {
+    case "name":
+    case "r-name":
+      return name;
+    case "type":
+    case "r-type":
+      return stat.type;
+    case "modified":
+    case "r-modified":
+      return stat.mtime;
+    case "size":
+    case "r-size":
+      return stat.size;
+    case "none":
+      return 0;
+    default:
+      return name;
+  }
+}
+
+function getSortedIndices(
+  indicesToSort: number[],
+  sortValues: (number | string)[],
+  sortBy: SortBy) {
+  const sortedIndices = indicesToSort.slice();
+  sortedIndices.sort((a, b) => {
+    const valueA = sortValues[a];
+    const valueB = sortValues[b];
+    if (valueA === valueB) {
+      return 0;
+    }
+    return valueA < valueB ? -1 : 1;
+  });
+
+  if (isReverseSort(sortBy)) {
+    sortedIndices.reverse();
+  }
+
+  return sortedIndices;
+}
+
+function addSortKeys(
+  fileInfoList: FileInfo[],
+  sortValues: (number | string)[],
+  sortBy: SortBy,
+  showFoldersBeforeFiles: boolean
+) {
+  if (sortBy === "none") {
+    return Array.from({ length: fileInfoList.length }, () => "");
+  }
+
+  const infoWithIndices = fileInfoList.map((fileInfo, index) => ({ fileInfo, index }));
+  let filesIndices = infoWithIndices.filter(({ fileInfo }) => fileInfo.isFile).map(({ index }) => index);
+  let foldersIndices = infoWithIndices.filter(({ fileInfo }) => !fileInfo.isFile).map(({ index }) => index);
+  if (!showFoldersBeforeFiles) {
+    filesIndices = filesIndices.concat(foldersIndices);
+    foldersIndices = [];
+  }
+
+  const sortedFilesIndices = getSortedIndices(filesIndices, sortValues, sortBy);
+  const sortedFoldersIndices = getSortedIndices(foldersIndices, sortValues, sortBy);
+
+  const sortedIndices = sortedFoldersIndices.concat(sortedFilesIndices);
+
+  const numPad = Math.ceil(Math.log10(sortedIndices.length + 1));
+  sortedIndices.forEach((index, i) => {
+    fileInfoList[index].sortKey = i.toString().padStart(numPad, "0");
+  });
+}
+
 export async function getChildrenOfPath(
   path: string,
   showHiddenFiles: boolean,
-  filesExclude: FilesExclude
+  filesExclude: FilesExclude,
+  sort?: { sortBy: SortBy, showFoldersBeforeFiles: boolean }
 ) {
   try {
     const filesTubles = await vscode.workspace.fs.readDirectory(
@@ -74,6 +153,9 @@ export async function getChildrenOfPath(
       );
 
     const fileInfoList: FileInfo[] = [];
+    const sortValues: (number | string)[] = [];
+
+    const { sortBy = "name", showFoldersBeforeFiles = true } = sort ?? {};
 
     for (const file of files) {
       const fileStat = await vscode.workspace.fs.stat(
@@ -84,7 +166,13 @@ export async function getChildrenOfPath(
         isFile: fileStat.type === vscode.FileType.File,
         documentExtension: getDocumentExtension(file, fileStat),
       });
+      if (sortBy !== "none") {
+        const value = getValueToSortBy(sortBy, fileInfoList[fileInfoList.length - 1], fileStat);
+        sortValues.push(value);
+      }
     }
+
+    addSortKeys(fileInfoList, sortValues, sortBy, showFoldersBeforeFiles);
 
     return fileInfoList;
   } catch (error) {

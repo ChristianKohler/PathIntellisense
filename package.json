@@ -78,6 +78,27 @@
           "type": "boolean",
           "default": false,
           "description": "Automatically triggers next suggestion after previous suggestion"
+        },
+        "path-intellisense.sortBy": {
+          "type": "string",
+          "default": "name",
+          "enum": [
+            "none",
+            "name",
+            "type",
+            "modified",
+            "size",
+            "r-name",
+            "r-type",
+            "r-modified",
+            "r-size"
+          ],
+          "description": "Sorts the suggestions by the selected property"
+        },
+        "path-intellisense.showFoldersBeforeFiles": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show folders before files"
         }
       }
     }
