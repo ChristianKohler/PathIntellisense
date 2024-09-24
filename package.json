@@ -93,7 +93,7 @@
             "r-modified",
             "r-size"
           ],
-          "description": "Sorts the suggestions by the selected property"
+          "description": "Sorts the suggestions by the selected property. r-* sorts in reverse order of that property"
         },
         "path-intellisense.showFoldersBeforeFiles": {
           "type": "boolean",
