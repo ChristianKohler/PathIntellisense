@@ -1,3 +1,10 @@
+# [2.10.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.9.0...v2.10.0) (2024-11-29)
+
+
+### Features
+
+* tsconfig path support ([33c6acc](https://github.com/ChristianKohler/PathIntellisense/commit/33c6accca9c2d54703028f02c5f2054ce7ba0007))
+
 # [2.9.0](https://github.com/ChristianKohler/PathIntellisense/compare/v2.8.0...v2.9.0) (2024-06-01)
 
 
