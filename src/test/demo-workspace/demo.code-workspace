@@ -20,6 +20,9 @@
     },
     {
       "path": "project-nixos-config"
+    },
+    {
+      "path": "project-with-paths"
     }
   ],
   "settings": {
