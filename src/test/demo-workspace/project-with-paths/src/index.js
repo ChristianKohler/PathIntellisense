@@ -1,1 +1,1 @@
-import { } from '@/foo/foo';
+import { } from '@/';

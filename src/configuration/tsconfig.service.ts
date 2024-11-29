@@ -131,7 +131,7 @@ async function findTsConfigFiles(workfolder: vscode.WorkspaceFolder) {
 
 async function createMappingsFromWorkspaceConfig(
   tsconfig: {
-    compilerOptions: { baseUrl: string, paths?: Record<string, string[]> };
+    compilerOptions: { baseUrl: string; paths?: Record<string, string[]> };
   },
   workfolder: vscode.WorkspaceFolder,
   showHiddenFiles: boolean,
@@ -142,14 +142,15 @@ async function createMappingsFromWorkspaceConfig(
   const paths = tsconfig?.compilerOptions?.paths;
 
   if (paths && baseUrl && workfolder) {
-    for (const alias in paths) {
-      const destinations = paths[alias];
+    for (const [key, value] of Object.entries(paths)) {
+      if (value.length === 0) {
+        continue;
+      }
 
-      destinations.forEach((dest) => {
-        mappings.push({
-          key: alias.replace(/\*$/, ''),
-          value: '${workspaceFolder}/' + join(baseUrl, dest.replace(/\*$/, '')),
-        });
+      mappings.push({
+        key: key.replace(/\*$/, ""),
+        value:
+          "${workspaceFolder}/" + join(baseUrl, value[0].replace(/\*$/, "")),
       });
     }
   }

@@ -2,7 +2,6 @@
 
 Visual Studio Code plugin that autocompletes filenames.
 
-
 ## Installation
 
 In the command palette (cmd-shift-p) select Install Extension and choose Path Intellisense.
@@ -43,7 +42,7 @@ Add this to the keybinding:
 
 ### BaseUrl
 
-Pathintellisense uses the ts.config.compilerOptions.baseUrl as a mapping. So no need to define it twice. There is no support for paths at the moment.
+Pathintellisense uses the ts.config.compilerOptions.baseUrl as a mapping. So no need to define it twice.
 
 For example:
 
@@ -79,6 +78,24 @@ You can disable this behaviour by setting it to true:
 	"path-intellisense.ignoreTsConfigBaseUrl": true,
 }
 ```
+
+### Paths
+
+Pathintellisense uses the ts.config.compilerOptions.paths as a mapping.
+
+For example:
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
+```
+
+Note: Fallbacks are not supported.
 
 ## Settings
 
